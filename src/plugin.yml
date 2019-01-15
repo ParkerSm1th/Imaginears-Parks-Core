@@ -1,0 +1,21 @@
+name: ImaginearsCore
+author: Gatario
+main: club.imaginears.core.Core
+version: [0.1-BETA]
+description: Created for ImaginearsClub
+api-version: 1.13
+commands:
+  edituser:
+  fly:
+  vanish:
+    aliases: [v, va]
+  vanished:
+    aliases: [vlist, vanishedlist]
+permissions:
+  core.edituser:
+  core.updaterank:
+  core.fly:
+  core.flyothers:
+  core.all:
+  core.vanish:
+  core.vanishothers:
