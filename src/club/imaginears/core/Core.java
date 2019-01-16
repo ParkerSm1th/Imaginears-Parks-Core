@@ -8,14 +8,22 @@ import club.imaginears.core.events.PlayerLeave;
 import club.imaginears.core.utils.Console;
 import club.imaginears.core.utils.GUIs;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
 
 public class Core extends JavaPlugin {
 
 
     private static Core instance;
     public static Boolean debug = true;
+    public File warpsFile;
+    public FileConfiguration warps;
 
     private static club.imaginears.core.Core c;
 
@@ -24,6 +32,7 @@ public class Core extends JavaPlugin {
 
         instance = this;
         Console.Log("Starting core..", Console.types.LOG);
+        createFiles();
         registerCommands();
         registerEvents();
 
@@ -39,6 +48,31 @@ public class Core extends JavaPlugin {
         return instance;
     }
 
+
+    public void createFiles() {
+        Console.Log("Loading files", Console.types.LOG);
+        createWarpsFile();
+        Console.Log("Loaded warps file", Console.types.LOG);
+    }
+
+    public FileConfiguration getWarpsFile() {
+        return this.warps;
+    }
+
+    private void createWarpsFile() {
+        warpsFile = new File(getDataFolder(), "warps.yml");
+        if (!warpsFile.exists()) {
+            warpsFile.getParentFile().mkdirs();
+            saveResource("warps.yml", false);
+        }
+
+        warps = new YamlConfiguration();
+        try {
+            warps.load(warpsFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void registerCommands() {
         Console.Log("Loading commands..", Console.types.LOG);

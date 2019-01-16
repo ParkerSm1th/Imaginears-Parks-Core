@@ -1,4 +1,4 @@
-package club.imaginears.core.objects;
+package club.imaginears.core.utils;
 
 public class AFKManager {
 

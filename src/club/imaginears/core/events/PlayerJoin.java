@@ -30,7 +30,7 @@ public class PlayerJoin implements Listener {
                 }
             }
         }
-        
+
         /* Vanish */
         if (p.hasPermission("core.vanish")) {
             if (Vanish.vanished.contains(p.getName())) {
