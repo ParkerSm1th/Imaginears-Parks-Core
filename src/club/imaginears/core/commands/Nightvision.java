@@ -58,6 +58,7 @@ public class Nightvision implements CommandExecutor {
             }
         }
 
+
         return true;
     }
 

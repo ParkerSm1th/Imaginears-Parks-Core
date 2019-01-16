@@ -80,6 +80,7 @@ public class Vanish implements CommandExecutor {
                 }
             }
         }
+
         return true;
     }
 

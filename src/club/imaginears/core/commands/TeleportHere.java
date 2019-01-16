@@ -34,6 +34,7 @@ public class TeleportHere implements CommandExecutor {
 
         }
 
+
         return true;
     }
 

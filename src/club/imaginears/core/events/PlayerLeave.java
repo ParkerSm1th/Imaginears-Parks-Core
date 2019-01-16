@@ -22,6 +22,7 @@ public class PlayerLeave implements Listener {
                     Chat.sendMessage(pls, "StaffAnnounce", "&b" + p.getName() + " &ahas clocked out");
                 }
             }
+
         }
     }
 
