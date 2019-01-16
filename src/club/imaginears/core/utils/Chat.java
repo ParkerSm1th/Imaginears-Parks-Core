@@ -15,7 +15,11 @@ public class Chat {
     }
 
     public static void sendMessage(Player player, String topic, String msg) {
-        player.sendMessage(sendColorFree("&b" + topic + "&7 » &a" + msg));
+        if (topic == "StaffAnnounce") {
+            player.sendMessage(sendColorFree("&cSTAFF" + "&7 » &a" + msg));
+        } else {
+            player.sendMessage(sendColorFree("&b" + topic + "&7 » &a" + msg));
+        }
     }
 
 

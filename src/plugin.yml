@@ -11,6 +11,12 @@ commands:
     aliases: [v, va]
   vanished:
     aliases: [vlist, vanishedlist]
+  nightvision:
+    aliases: [nv]
+  teleport:
+    aliases: [tp]
+  teleporthere:
+    aliases: [tphere]
 permissions:
   core.edituser:
   core.updaterank:
@@ -19,3 +25,9 @@ permissions:
   core.all:
   core.vanish:
   core.vanishothers:
+  core.nv:
+  core.nvothers:
+  core.staff:
+  core.tp:
+  core.tpothers:
+  core.tphere:

@@ -18,9 +18,7 @@ public class Vanish implements CommandExecutor {
     public void vanish(Player p) {
         for (Player pls : Bukkit.getOnlinePlayers()) {
             if (pls.hasPermission("core.vanish")) {
-                if (pls != p) {
-                    Chat.sendMessage(pls, "Staff", "&b" + p.getName() + " &ahas vanished");
-                }
+
             } else {
                 pls.hidePlayer(p);
             }
@@ -33,9 +31,7 @@ public class Vanish implements CommandExecutor {
     public void unVanish(Player p) {
         for (Player pls : Bukkit.getOnlinePlayers()) {
             if (pls.hasPermission("core.vanish")) {
-                if (pls != p) {
-                    Chat.sendMessage(pls, "Staff", "&b" + p.getName() + " &ahas unvanished");
-                }
+
             } else {
                 pls.showPlayer(p);
             }
