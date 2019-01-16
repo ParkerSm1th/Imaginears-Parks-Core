@@ -21,22 +21,34 @@ public class PlayerJoin implements Listener {
 
         Chat.sendMessage(p, "Welcome", "Welcome to &b&lWalt Disney World&r&a!");
         e.setJoinMessage(null);
+        if (p.hasPermission("core.staff") || p.hasPermission("core.character")) {
+            for (Player pls : Bukkit.getOnlinePlayers()) {
+                if (pls.hasPermission("core.staff")) {
+                    if (pls != p) {
+                        Chat.sendMessage(pls, "StaffAnnounce", "&b" + p.getName() + " &ahas clocked in");
+                    }
+                }
+            }
+        }
         /* Vanish */
         if (p.hasPermission("core.vanish")) {
             if (Vanish.vanished.contains(p.getName())) {
                 for (Player pls : Bukkit.getOnlinePlayers()) {
                     if (pls.hasPermission("core.vanish")) {
                         if (pls != p) {
-                            Chat.sendMessage(pls, "Staff", "&b" + p.getName() + " &ahas logged back in while vanished");
+                            Chat.sendMessage(pls, "StaffAnnounce", "&b" + p.getName() + " &ahas logged back in while vanished");
                         }
                     } else {
                         pls.hidePlayer(p);
                     }
                 }
 
-                Chat.sendMessage(p, "Staff", "You are still vanished! &b&lAlso currently vanished: &a" + String.join(", ", Vanish.vanished));
+                Chat.sendMessage(p, "Staff", "You are still vanished! &b&lCurrently vanished: &a" + String.join(", ", Vanish.vanished));
             } else {
-                Chat.sendMessage(p, "Staff", "&b&lCurrently vanished: &a" + String.join(", ", Vanish.vanished));
+                if (!Vanish.vanished.isEmpty()) {
+                    Chat.sendMessage(p, "Staff", "&b&lCurrently vanished: &a" + String.join(", ", Vanish.vanished));
+                }
+
             }
 
         } else {
