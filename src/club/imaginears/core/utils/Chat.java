@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 public class Chat {
 
     public enum ChatErrors {
-        PERMS, ARGCOUNT, INVALIDARG;
+        PERMS, ARGCOUNT, INVALIDARG, COMMON;
     }
 
     public static String sendColorFree(String msg) {
@@ -30,6 +30,8 @@ public class Chat {
             player.sendMessage(sendColorFree("&bCommand" + "&7 » &cInvalid usage, please use: " + extra));
         } else if (error == ChatErrors.INVALIDARG) {
             player.sendMessage(sendColorFree("&bCommand" + "&7 » &cInvalid arguments, please use: " + extra));
+        } else if (error == ChatErrors.COMMON) {
+            player.sendMessage(sendColorFree("&bCommand" + "&7 » &cSomething went wrong: " + extra));
         }
     }
 

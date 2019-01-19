@@ -90,6 +90,14 @@ public class Core extends JavaPlugin {
         Console.Log("Loaded teleport command", Console.types.DEBUG);
         getCommand("teleporthere").setExecutor(new TeleportHere());
         Console.Log("Loaded teleporthere command", Console.types.DEBUG);
+        getCommand("setwarp").setExecutor(new SetWarp());
+        Console.Log("Loaded setwarp command", Console.types.DEBUG);
+        getCommand("delwarp").setExecutor(new DelWarp());
+        Console.Log("Loaded delwarp command", Console.types.DEBUG);
+        getCommand("warp").setExecutor(new Warp());
+        Console.Log("Loaded warp command", Console.types.DEBUG);
+        getCommand("warps").setExecutor(new Warps());
+        Console.Log("Loaded warps command", Console.types.DEBUG);
         Console.Log("Loaded commands..", Console.types.LOG);
     }
 

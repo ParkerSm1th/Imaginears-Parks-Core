@@ -17,6 +17,10 @@ commands:
     aliases: [tp]
   teleporthere:
     aliases: [tphere]
+  setwarp:
+  delwarp:
+  warp:
+  warps:
 permissions:
   core.edituser:
   core.updaterank:
@@ -31,3 +35,19 @@ permissions:
   core.tp:
   core.tpothers:
   core.tphere:
+  core.setwarp:
+  core.delwarp:
+  core.warps:
+  core.warps.guest:
+  core.warps.silver:
+  core.warps.gold:
+  core.warps.platinum:
+  core.warps.platinum+:
+  core.warps.specialguest:
+  core.warps.security:
+  core.warps.character:
+  core.warps.photopass:
+  core.warps.castmember:
+  core.warps.coordinator:
+  core.warps.developer:
+  core.warps.manager:
