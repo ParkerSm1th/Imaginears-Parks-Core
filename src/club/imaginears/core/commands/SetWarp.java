@@ -37,27 +37,27 @@ public class SetWarp implements CommandExecutor {
 
                 switch(type) {
                     case "ride":
-                        Warps.setWarp(name, type, perm, p.getLocation());
+                        Warps.setWarp(name.toLowerCase(), type, perm, p.getLocation());
                         Chat.sendMessage(p, "Warps", "Successfully created the &b" + type + "&a warp called &b" + name);
                         break;
                     case "show":
-                        Warps.setWarp(name, type, perm, p.getLocation());
+                        Warps.setWarp(name.toLowerCase(), type, perm, p.getLocation());
                         Chat.sendMessage(p, "Warps", "Successfully created the &b" + type + "&a warp called &b" + name);
                          break;
                     case "event":
-                        Warps.setWarp(name, type, perm, p.getLocation());
+                        Warps.setWarp(name.toLowerCase(), type, perm, p.getLocation());
                         Chat.sendMessage(p, "Warps", "Successfully created the &b" + type + "&a warp called &b" + name);
                         break;
                     case "shop":
-                        Warps.setWarp(name, type, perm, p.getLocation());
+                        Warps.setWarp(name.toLowerCase(), type, perm, p.getLocation());
                         Chat.sendMessage(p, "Warps", "Successfully created the &b" + type + "&a warp called &b" + name);
                         break;
                     case "park":
-                        Warps.setWarp(name, type, perm, p.getLocation());
+                        Warps.setWarp(name.toLowerCase(), type, perm, p.getLocation());
                         Chat.sendMessage(p, "Warps", "Successfully created the &b" + type + "&a warp called &b" + name);
                         break;
                     case "location":
-                        Warps.setWarp(name, type, perm, p.getLocation());
+                        Warps.setWarp(name.toLowerCase(), type, perm, p.getLocation());
                         Chat.sendMessage(p, "Warps", "Successfully created the &b" + type + "&a warp called &b" + name);
                         break;
                     default:

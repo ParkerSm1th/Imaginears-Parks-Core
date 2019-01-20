@@ -6,6 +6,7 @@ import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.Permissions;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,8 +31,10 @@ public class PlayerJoin implements Listener {
                 }
             }
         }
-
+        p.teleport(new Location(Bukkit.getWorld("mk"), 64.5, 66.0, 1574.5, (float) -134.23317, (float) -0.30038348));
+        p.setPlayerListName(ChatColor.translateAlternateColorCodes('&', Permissions.getRankPrefix(p) + " &7" + p.getName()));
         /* Vanish */
+
         if (p.hasPermission("core.vanish")) {
             if (Vanish.vanished.contains(p.getName())) {
                 for (Player pls : Bukkit.getOnlinePlayers()) {

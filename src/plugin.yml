@@ -14,40 +14,83 @@ commands:
   nightvision:
     aliases: [nv]
   teleport:
-    aliases: [tp]
+    aliases: [tp, mu, meetup]
   teleporthere:
-    aliases: [tphere]
+    aliases: [tphere, muh, meetuphere]
   setwarp:
   delwarp:
   warp:
   warps:
+  tptoggle:
+    aliases: [mut, meetuptoggle]
+  flyspeed:
+    aliases: [flightspeed]
+  walkspeed:
+    aliases: [groundspeed]
 permissions:
   core.edituser:
+    description: Permission
   core.updaterank:
+    description: Permission
   core.fly:
+    description: Permission
   core.flyothers:
+    description: Permission
   core.all:
+    description: Permission
   core.vanish:
+    description: Permission
   core.vanishothers:
+    description: Permission
   core.nv:
+    description: Permission
   core.nvothers:
+    description: Permission
   core.staff:
+    description: Permission
   core.tp:
+    description: Permission
   core.tpothers:
+    description: Permission
   core.tphere:
+    description: Permission
+  core.tpoverride:
+    description: Permission
+  core.tptoggle:
+    description: Permission
+  core.flyspeed:
+    description: Permission
+  core.walkspeed:
+    description: Permission
   core.setwarp:
+    description: Permission
   core.delwarp:
+    description: Permission
   core.warps:
+    description: Permission
   core.warps.guest:
+    description: Permission
   core.warps.silver:
+    description: Permission
   core.warps.gold:
+    description: Permission
   core.warps.platinum:
+    description: Permission
   core.warps.platinum+:
+    description: Permission
   core.warps.specialguest:
+    description: Permission
   core.warps.security:
+    description: Permission
   core.warps.character:
+    description: Permission
   core.warps.photopass:
+    description: Permission
   core.warps.castmember:
+    description: Permission
   core.warps.coordinator:
+    description: Permission
   core.warps.developer:
+    description: Permission
   core.warps.manager:
+    description: Permission

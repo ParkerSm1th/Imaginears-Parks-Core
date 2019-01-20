@@ -98,6 +98,12 @@ public class Core extends JavaPlugin {
         Console.Log("Loaded warp command", Console.types.DEBUG);
         getCommand("warps").setExecutor(new Warps());
         Console.Log("Loaded warps command", Console.types.DEBUG);
+        getCommand("tptoggle").setExecutor(new TPToggle());
+        Console.Log("Loaded tptoggle command", Console.types.DEBUG);
+        getCommand("flyspeed").setExecutor(new FlightSpeed());
+        Console.Log("Loaded flyspeed command", Console.types.DEBUG);
+        getCommand("walkspeed").setExecutor(new WalkSpeed());
+        Console.Log("Loaded walkspeed command", Console.types.DEBUG);
         Console.Log("Loaded commands..", Console.types.LOG);
     }
 

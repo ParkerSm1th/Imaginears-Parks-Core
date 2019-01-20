@@ -42,7 +42,7 @@ public class Warps {
         Float yaw = Float.parseFloat(warp.get("yaw").toString());
         Float pitch = Float.parseFloat(warp.get("pitch").toString());
 
-        Location warploc = new Location(Bukkit.getWorld("world"), x, y, z, yaw, pitch);
+        Location warploc = new Location(Bukkit.getWorld("mk"), x, y, z, yaw, pitch);
 
         return warploc;
     }

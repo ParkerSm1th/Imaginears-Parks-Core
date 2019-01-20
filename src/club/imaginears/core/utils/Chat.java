@@ -27,9 +27,9 @@ public class Chat {
         if (error == ChatErrors.PERMS) {
             player.sendMessage(sendColorFree("&bPermissions" + "&7 » &cYou do not have access to that command."));
         } else if (error == ChatErrors.ARGCOUNT) {
-            player.sendMessage(sendColorFree("&bCommand" + "&7 » &cInvalid usage, please use: " + extra));
+            player.sendMessage(sendColorFree("&bCommand" + "&7 » &cPlease use: " + extra));
         } else if (error == ChatErrors.INVALIDARG) {
-            player.sendMessage(sendColorFree("&bCommand" + "&7 » &cInvalid arguments, please use: " + extra));
+            player.sendMessage(sendColorFree("&bCommand" + "&7 » &cPlease use: " + extra));
         } else if (error == ChatErrors.COMMON) {
             player.sendMessage(sendColorFree("&bCommand" + "&7 » &cSomething went wrong: " + extra));
         }

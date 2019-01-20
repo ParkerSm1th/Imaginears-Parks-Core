@@ -23,8 +23,12 @@ public class Teleport implements CommandExecutor {
                 if (target == null) {
                     Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/tp (Online player)");
                 } else {
+                    if (TPToggle.tpoff.contains(target.getName()) && !Permissions.checkPermission(p, "core.tpoverride")) {
+                        Chat.sendError(p, Chat.ChatErrors.COMMON, "That player has meeting up toggled off.");
+                        return true;
+                    }
                     p.teleport(target);
-                    Chat.sendMessage(p, "Staff", "Teleported to &b" + target.getName());
+                    Chat.sendMessage(p, "Staff", "You have met up with &b" + target.getName());
                 }
             }
             if (args.length > 2 || args.length < 1) {
@@ -41,8 +45,12 @@ public class Teleport implements CommandExecutor {
                     if (target1 == null || target2 == null) {
                         Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/tp (Online player) [Online player]");
                     } else {
+                        if (TPToggle.tpoff.contains(target1.getName()) || TPToggle.tpoff.contains(target2.getName()) && !Permissions.checkPermission(p, "core.tpoverride")) {
+                            Chat.sendError(p, Chat.ChatErrors.COMMON, "One of those players has meeting up toggled off.");
+                            return true;
+                        }
                         target1.teleport(target2);
-                        Chat.sendMessage(p, "Staff", "Teleported &b" + target1.getName() + " &ato &b" + target2.getName());
+                        Chat.sendMessage(p, "Staff", "Sent &b" + target1.getName() + " &ato meet up with &b" + target2.getName());
                     }
 
                 } else {

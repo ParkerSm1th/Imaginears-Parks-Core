@@ -26,7 +26,7 @@ public class Warps implements CommandExecutor {
                 Chat.sendError(p, Chat.ChatErrors.ARGCOUNT, "/warps (Type) - Warp types are as follows: ride, show, shop, event, park, and location");
             }
             if (args.length == 1) {
-                String type = args[0];
+                String type = args[0].toLowerCase();
                 switch(type) {
                     case "ride":
                         if (!club.imaginears.core.utils.Warps.getWarps(0).isEmpty()) {

@@ -64,8 +64,10 @@ public class Vanish implements CommandExecutor {
                     }
                     if (vanished.contains(target.getName())) {
                         unVanish(target);
+                        Chat.sendMessage(p, "Staff", "That player has been unvanished");
                     } else {
                         vanish(target);
+                        Chat.sendMessage(p, "Staff", "That player has been vanished");
                     }
                 } else {
                     Chat.sendError(p, Chat.ChatErrors.ARGCOUNT, "/vanish");

@@ -26,8 +26,12 @@ public class TeleportHere implements CommandExecutor {
                 if (target == null) {
                     Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/tphere (Online player)");
                 } else {
+                    if (TPToggle.tpoff.contains(target.getName()) && !Permissions.checkPermission(p, "core.tpoverride")) {
+                        Chat.sendError(p, Chat.ChatErrors.COMMON, "That player has meeting up toggled off.");
+                        return true;
+                    }
                     target.teleport(p);
-                    Chat.sendMessage(p, "Staff", "Teleported &b" + target.getName() + " &ato you");
+                    Chat.sendMessage(p, "Staff", "&b" + target.getName() + " &ahas met up with you");
                 }
 
             }
