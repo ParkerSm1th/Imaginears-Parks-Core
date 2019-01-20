@@ -12,6 +12,10 @@ public class FileAccess {
         return Core.getInstance().warps;
     }
 
+    public static FileConfiguration getInventories() {
+        return Core.getInstance().inventories;
+    }
+
     public static boolean isSet(FileConfiguration file, String path) {
         return file.isSet(path);
     }

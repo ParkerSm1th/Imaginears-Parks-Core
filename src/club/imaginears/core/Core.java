@@ -5,12 +5,15 @@ import club.imaginears.core.events.AsyncPlayerChat;
 import club.imaginears.core.events.PlayerCommandPreprocess;
 import club.imaginears.core.events.PlayerJoin;
 import club.imaginears.core.events.PlayerLeave;
+import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.Console;
 import club.imaginears.core.utils.GUIs;
+import club.imaginears.core.utils.InventoryManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,6 +27,9 @@ public class Core extends JavaPlugin {
     public static Boolean debug = true;
     public File warpsFile;
     public FileConfiguration warps;
+
+    public File inventoriesFile;
+    public FileConfiguration inventories;
 
     private static club.imaginears.core.Core c;
 
@@ -41,6 +47,7 @@ public class Core extends JavaPlugin {
     @Override
     public void onDisable() {
         instance = null;
+        saveInventories();
         Console.Log("Stopping core..", Console.types.LOG);
     }
 
@@ -52,6 +59,8 @@ public class Core extends JavaPlugin {
     public void createFiles() {
         Console.Log("Loading files", Console.types.LOG);
         createWarpsFile();
+        Console.Log("Loaded warps file", Console.types.LOG);
+        createInventoriesFile();
         Console.Log("Loaded warps file", Console.types.LOG);
     }
 
@@ -71,6 +80,35 @@ public class Core extends JavaPlugin {
             warps.load(warpsFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
+        }
+    }
+
+    public FileConfiguration getInventoriesFile() {
+        return this.inventories;
+    }
+
+    private void createInventoriesFile() {
+        inventoriesFile = new File(getDataFolder(), "inventories.yml");
+        if (!inventoriesFile.exists()) {
+            inventoriesFile.getParentFile().mkdirs();
+            saveResource("inventories.yml", false);
+        }
+
+        inventories = new YamlConfiguration();
+        try {
+            inventories.load(inventoriesFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveInventories() {
+        for (String pname : Build.buildMode) {
+            Player p = Bukkit.getPlayer(pname);
+            Chat.sendMessage(p, "Staff", "The plugin is being reloaded, you will be taken out of build mode");
+            InventoryManager.loadPlayInventory(p);
+            InventoryManager.savePlayInventory(p);
+            Build.buildMode.remove(p.getName());
         }
     }
 
@@ -104,6 +142,8 @@ public class Core extends JavaPlugin {
         Console.Log("Loaded flyspeed command", Console.types.DEBUG);
         getCommand("walkspeed").setExecutor(new WalkSpeed());
         Console.Log("Loaded walkspeed command", Console.types.DEBUG);
+        getCommand("build").setExecutor(new Build());
+        Console.Log("Loaded build command", Console.types.DEBUG);
         Console.Log("Loaded commands..", Console.types.LOG);
     }
 
@@ -115,6 +155,7 @@ public class Core extends JavaPlugin {
         pm.registerEvents(new GUIs(), this);
         pm.registerEvents(new PlayerCommandPreprocess(), this);
         pm.registerEvents(new AsyncPlayerChat(), this);
+        pm.registerEvents(new InventoryManager(), this);
         Console.Log("Loaded events..", Console.types.LOG);
     }
 }

@@ -1,6 +1,8 @@
 package club.imaginears.core.events;
 
+import club.imaginears.core.commands.Build;
 import club.imaginears.core.utils.Chat;
+import club.imaginears.core.utils.InventoryManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -15,6 +17,11 @@ public class PlayerLeave implements Listener {
         Player p = e.getPlayer();
         if (p.getType() != EntityType.PLAYER) return;
 
+        if (!Build.buildMode.contains(p.getName())) {
+            InventoryManager.savePlayInventory(p);
+        } else {
+            Build.buildMode.remove(p.getName());
+        }
         e.setQuitMessage(null);
         if (p.hasPermission("core.staff") || p.hasPermission("core.character")) {
             for (Player pls : Bukkit.getOnlinePlayers()) {
