@@ -8,7 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class WalkSpeed implements CommandExecutor {
+public class Speed implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
@@ -17,18 +17,23 @@ public class WalkSpeed implements CommandExecutor {
         }
         Player p = (Player) sender;
 
-        if (Permissions.checkPermissionMsg(p, "core.walkspeed")) {
+        if (Permissions.checkPermissionMsg(p, "core.speed")) {
             if (args.length > 1 || args.length < 1) {
-                Chat.sendError(p, Chat.ChatErrors.ARGCOUNT, "/walkspeed (1-5)");
+                Chat.sendError(p, Chat.ChatErrors.ARGCOUNT, "/speed (1-5)");
             }
             if (args.length == 1) {
                 Float speed = Float.parseFloat(args[0]);
                 if (speed < 1 || speed > 5) {
-                    Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/walkspeed (1-5)");
+                    Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/speed (1-5)");
                     return true;
                 }
-                p.setWalkSpeed(speed / 10);
-                Chat.sendMessage(p, "Staff", "Set walking speed to &b" + args[0]);
+                if (p.isFlying()) {
+                    p.setFlySpeed(speed / 10);
+                    Chat.sendMessage(p, "Staff", "Set Peter Pan speed to &b" + args[0]);
+                } else {
+                    p.setWalkSpeed(speed / 10);
+                    Chat.sendMessage(p, "Staff", "Set walking speed to &b" + args[0]);
+                }
             }
 
         }

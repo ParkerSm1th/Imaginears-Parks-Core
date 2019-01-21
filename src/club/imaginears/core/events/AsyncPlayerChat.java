@@ -16,8 +16,7 @@ public class AsyncPlayerChat implements Listener {
     public void onChat(AsyncPlayerChatEvent e) {
 
         Player p = e.getPlayer();
-        String msg = Permissions.getRankPrefix(p) + "&7 " + p.getDisplayName() + ": " + Permissions.getChatColor(p) + e.getMessage();
-        Bukkit.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&', msg));
-        e.setCancelled(true);
+        e.setFormat(ChatColor.translateAlternateColorCodes('&', Permissions.getRankPrefix(p) + "&7 " + p.getDisplayName() + ": " + Permissions.getChatColor(p) + e.getMessage()));
+
     }
 }

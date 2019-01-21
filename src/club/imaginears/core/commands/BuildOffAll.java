@@ -4,6 +4,7 @@ import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.InventoryManager;
 import club.imaginears.core.utils.Permissions;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,12 +26,14 @@ public class BuildOffAll implements CommandExecutor {
                     if (Build.buildMode.contains(pname.getName())) {
                         Chat.sendMessage(pl, "Staff", "The plugin is being reloaded, you will be taken out of build mode");
                         InventoryManager.saveBuildInventory(pl);
+                        p.setGameMode(GameMode.SURVIVAL);
                         InventoryManager.loadPlayInventory(pl);
                         Build.buildMode.remove(pl.getName());
                     } else {
                         InventoryManager.savePlayInventory(pl);
                     }
                 }
+                Chat.sendMessage(p, "Developer", "Disabled build mode for everyone");
             }
             if (args.length > 0 || args.length < 0) {
                 Chat.sendError(p, Chat.ChatErrors.ARGCOUNT, "/buildoffall");

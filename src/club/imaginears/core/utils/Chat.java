@@ -22,7 +22,6 @@ public class Chat {
         }
     }
 
-
     public static void sendError(Player player, ChatErrors error, String extra) {
         if (error == ChatErrors.PERMS) {
             player.sendMessage(sendColorFree("&bPermissions" + "&7 » &cYou do not have access to that command."));

@@ -19,12 +19,12 @@ public class FlightSpeed implements CommandExecutor {
 
         if (Permissions.checkPermissionMsg(p, "core.flyspeed")) {
             if (args.length > 1 || args.length < 1) {
-                Chat.sendError(p, Chat.ChatErrors.ARGCOUNT, "/flyspeed (1-10)");
+                Chat.sendError(p, Chat.ChatErrors.ARGCOUNT, "/flyspeed (1-5)");
             }
             if (args.length == 1) {
                 Float speed = Float.parseFloat(args[0]);
-                if (speed <= 1 && speed >= 10) {
-                    Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/flyspeed (1-10)");
+                if (speed < 1 || speed > 5) {
+                    Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/flyspeed (1-5)");
                     return true;
                 }
                 p.setFlySpeed(speed / 10);

@@ -4,6 +4,7 @@ main: club.imaginears.core.Core
 version: [0.1-BETA]
 description: Created for ImaginearsClub
 api-version: 1.13
+load: startup
 commands:
   edituser:
   fly:
@@ -34,7 +35,15 @@ commands:
   tpcoord:
     aliases: [tpc]
   buildoffall:
+  heal:
+  speed:
 permissions:
+  core.healothers:
+    description: Permission
+  core.speed:
+    description: Permission
+  core.heal:
+    description: Permission
   core.fixinventory:
     description: Permission
   core.getuuid:

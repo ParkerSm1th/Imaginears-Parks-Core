@@ -96,9 +96,6 @@ public class InventoryManager implements Listener {
             addItem(p.getInventory(), Material.CHEST, "§b" + p.getName() + "§a's Backpack", Lists.newArrayList(" ", "§7Store your keepsake items in here!", " "), p.getUniqueId().toString(), 2);
             addItem(p.getInventory(), Material.GLASS_PANE, "§7Reserved Slot", Lists.newArrayList(" ", "§7Reserved for ride items or event items", " "), p.getUniqueId().toString(), 3);
             addItem(p.getInventory(), Material.GLASS_PANE, "§7Reserved Slot", Lists.newArrayList(" ", "§7Reserved for ride items or event items", " "), p.getUniqueId().toString(), 4);
-            for (int i = 9; i<37; i++) {
-                addItem(p.getInventory(), Material.GRAY_STAINED_GLASS_PANE, "§cUse your backpack for storage", Lists.newArrayList(" ", "§7Please use your backpack for storage!", " "), p.getUniqueId().toString(), i);
-            }
         }
     }
 

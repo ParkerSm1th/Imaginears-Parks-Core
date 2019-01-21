@@ -160,6 +160,10 @@ public class Core extends JavaPlugin {
         Console.Log("Loaded getuuid command", Console.types.DEBUG);
         getCommand("fixinventory").setExecutor(new FixInventory());
         Console.Log("Loaded fixinventory command", Console.types.DEBUG);
+        getCommand("heal").setExecutor(new Heal());
+        Console.Log("Loaded heal command", Console.types.DEBUG);
+        getCommand("speed").setExecutor(new Speed());
+        Console.Log("Loaded speed command", Console.types.DEBUG);
         Console.Log("Loaded commands..", Console.types.LOG);
     }
 

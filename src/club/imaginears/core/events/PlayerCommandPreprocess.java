@@ -18,17 +18,20 @@ public class PlayerCommandPreprocess implements Listener {
         Player p = e.getPlayer();
 
         List<String> plugins = new ArrayList();
-        plugins.add("pl");
         plugins.add("plugins");
         plugins.add("bukkit:pl");
         plugins.add("bukkit:plugins");
-        plugins.add("plugins");
+
+        List<String> plugins2 = new ArrayList();
+        plugins.add("pl");
 
         List<String> version = new ArrayList();
-        version.add("ver");
         version.add("version");
         version.add("bukkit:ver");
         version.add("bukkit:version");
+
+        List<String> version2 = new ArrayList();
+        version.add("ver");
 
         List<String> about = new ArrayList();
         about.add("about");
@@ -61,9 +64,15 @@ public class PlayerCommandPreprocess implements Listener {
 
             for (String Loop : plugins) {
                 if (msg[0].equalsIgnoreCase("/" + Loop)) {
-
                     e.setCancelled(true);
-                    Chat.permsError(p);
+                    p.sendMessage(Chat.sendColorFree("&fPlugins (3): &aFaith&f, &aTrust&f, &aand a bit of pixie dust"));
+                }
+            }
+
+            for (String Loop : plugins2) {
+                if (msg[0].equalsIgnoreCase("/" + Loop)) {
+                    e.setCancelled(true);
+                    p.sendMessage(Chat.sendColorFree("&fPlugins (3): &aFaith&f, &aTrust&f, &aand a bit of pixie dust"));
                 }
             }
 
@@ -72,7 +81,15 @@ public class PlayerCommandPreprocess implements Listener {
                 if (msg[0].equalsIgnoreCase("/" + Loop)) {
 
                     e.setCancelled(true);
-                    Chat.permsError(p);
+                    p.sendMessage("This server is running CraftBukkit version\ngit-Spigot-ImaginearsCustom (MC: 1.13.2) (Implementing API version 1.13.2-ImaginearsCustom)");
+                }
+            }
+
+            for (String Loop : version2) {
+                if (msg[0].equalsIgnoreCase("/" + Loop)) {
+
+                    e.setCancelled(true);
+                    p.sendMessage("This server is running CraftBukkit version\ngit-Spigot-ImaginearsCustom (MC: 1.13.2) (Implementing API version 1.13.2-ImaginearsCustom)");
                 }
             }
 
