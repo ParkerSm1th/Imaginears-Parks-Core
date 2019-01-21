@@ -87,7 +87,7 @@ public class Core extends JavaPlugin {
         return this.inventories;
     }
 
-    private void createInventoriesFile() {
+    public void createInventoriesFile() {
         inventoriesFile = new File(getDataFolder(), "inventories.yml");
         if (!inventoriesFile.exists()) {
             inventoriesFile.getParentFile().mkdirs();
@@ -103,12 +103,18 @@ public class Core extends JavaPlugin {
     }
 
     public void saveInventories() {
-        for (String pname : Build.buildMode) {
-            Player p = Bukkit.getPlayer(pname);
-            Chat.sendMessage(p, "Staff", "The plugin is being reloaded, you will be taken out of build mode");
-            InventoryManager.loadPlayInventory(p);
-            InventoryManager.savePlayInventory(p);
-            Build.buildMode.remove(p.getName());
+        for (Player pname : Bukkit.getOnlinePlayers()) {
+            Player p = Bukkit.getPlayer(pname.getName());
+            if (Build.buildMode.contains(pname.getName())) {
+                Chat.sendMessage(p, "Staff", "The plugin is being reloaded, you will be taken out of build mode");
+                InventoryManager.saveBuildInventory(p);
+                Chat.sendMessage(p, "Staff", "Saved build");
+                InventoryManager.loadPlayInventory(p);
+                Chat.sendMessage(p, "Staff", "Out of build");
+                Build.buildMode.remove(p.getName());
+            } else {
+                InventoryManager.savePlayInventory(p);
+            }
         }
     }
 
@@ -144,6 +150,16 @@ public class Core extends JavaPlugin {
         Console.Log("Loaded walkspeed command", Console.types.DEBUG);
         getCommand("build").setExecutor(new Build());
         Console.Log("Loaded build command", Console.types.DEBUG);
+        getCommand("tpcoord").setExecutor(new TPCoord());
+        Console.Log("Loaded tpcoord command", Console.types.DEBUG);
+        getCommand("buildoffall").setExecutor(new BuildOffAll());
+        Console.Log("Loaded buildoffall command", Console.types.DEBUG);
+        getCommand("reloadinventories").setExecutor(new ReloadInventories());
+        Console.Log("Loaded reloadinventories command", Console.types.DEBUG);
+        getCommand("getuuid").setExecutor(new GetUUID());
+        Console.Log("Loaded getuuid command", Console.types.DEBUG);
+        getCommand("fixinventory").setExecutor(new FixInventory());
+        Console.Log("Loaded fixinventory command", Console.types.DEBUG);
         Console.Log("Loaded commands..", Console.types.LOG);
     }
 

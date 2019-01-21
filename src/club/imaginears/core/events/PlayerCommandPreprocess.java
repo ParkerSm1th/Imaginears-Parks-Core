@@ -38,9 +38,27 @@ public class PlayerCommandPreprocess implements Listener {
         question.add("?");
         question.add("help");
         question.add("bukkit:?");
-        if (Permissions.checkPermission(p, "core.commandoverride")) {
 
+        List<String> inv = new ArrayList();
+        inv.add("clear");
+        inv.add("gamemode");
+        if (Permissions.checkPermission(p, "core.commandoverride")) {
+            for (String Loop : inv) {
+                if (msg[0].equalsIgnoreCase("/" + Loop)) {
+
+                    e.setCancelled(true);
+                    Chat.sendMessage(p, "Staff", "Please use build mode /build");
+                }
+            }
         } else {
+            for (String Loop : inv) {
+                if (msg[0].equalsIgnoreCase("/" + Loop)) {
+
+                    e.setCancelled(true);
+                    Chat.sendMessage(p, "Staff", "Please use build mode /build");
+                }
+            }
+
             for (String Loop : plugins) {
                 if (msg[0].equalsIgnoreCase("/" + Loop)) {
 

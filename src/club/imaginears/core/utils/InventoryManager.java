@@ -110,8 +110,21 @@ public class InventoryManager implements Listener {
     public static void loadBuildInventory(Player p) {
         savePlayInventory(p);
         p.getInventory().clear();
-        addItem(p.getInventory(), Material.COMPASS, "§bCM Compass", Lists.newArrayList(" ", "§7Helps you get places quicker"," "), p.getUniqueId().toString(), 0);
-        addItem(p.getInventory(), Material.WOODEN_AXE, "§bW/E Wand", Lists.newArrayList(" ", "§7W/E wand to save you a command."," "), p.getUniqueId().toString(), 1);
+        if (inventories.isSet(p.getUniqueId().toString() + ".build")) {
+            try {
+                p.getInventory().setContents(InventoryStringDeSerializer.itemStackArrayFromBase64(inventories.getString(p.getUniqueId().toString() + ".build")));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            addItem(p.getInventory(), Material.COMPASS, "§bCM Compass", Lists.newArrayList(" ", "§7Helps you get places quicker", " "), p.getUniqueId().toString(), 0);
+            addItem(p.getInventory(), Material.WOODEN_AXE, "§bW/E Wand", Lists.newArrayList(" ", "§7W/E wand to save you a command.", " "), p.getUniqueId().toString(), 1);
+        }
+    }
+
+    public static void saveBuildInventory(Player p) {
+        inventories.set(p.getUniqueId().toString() + ".build", InventoryStringDeSerializer.toBase64(p.getInventory()));
+        saveFile();
     }
 
 

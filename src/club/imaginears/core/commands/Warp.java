@@ -39,7 +39,7 @@ public class Warp implements CommandExecutor {
                 if (Permissions.checkPermission(p, "core.warpothers")) {
                     Player target = Bukkit.getPlayer(args[1]);
                     if (target == null) {
-                        Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/tp (Online player)");
+                        Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/warp (Warp Name) (Online player)");
                     } else {
                         String name = args[0].toLowerCase();
                         if (Warps.checkWarp(name)) {

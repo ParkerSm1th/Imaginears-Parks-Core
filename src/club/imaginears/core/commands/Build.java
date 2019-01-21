@@ -4,6 +4,7 @@ import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.InventoryManager;
 import club.imaginears.core.utils.Permissions;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,12 +27,15 @@ public class Build implements CommandExecutor {
             if (args.length == 0) {
                 if (buildMode.contains(p.getName())) {
                     buildMode.remove(p.getName());
+                    InventoryManager.saveBuildInventory(p);
                     InventoryManager.loadPlayInventory(p);
+                    p.setGameMode(GameMode.ADVENTURE);
                     Chat.sendMessage(p, "Staff", "You are no longer in build mode");
                 } else {
                     buildMode.add(p.getName());
                     InventoryManager.savePlayInventory(p);
                     InventoryManager.loadBuildInventory(p);
+                    p.setGameMode(GameMode.CREATIVE);
                     Chat.sendMessage(p, "Staff", "You are now in build mode");
                 }
             }

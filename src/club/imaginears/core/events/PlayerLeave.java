@@ -21,6 +21,7 @@ public class PlayerLeave implements Listener {
             InventoryManager.savePlayInventory(p);
         } else {
             Build.buildMode.remove(p.getName());
+            InventoryManager.saveBuildInventory(p);
         }
         e.setQuitMessage(null);
         if (p.hasPermission("core.staff") || p.hasPermission("core.character")) {

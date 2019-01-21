@@ -22,7 +22,7 @@ public class SetWarp implements CommandExecutor {
 
         if (Permissions.checkPermissionMsg(p, "core.setwarp")) {
             if (args.length > 3 || args.length < 3) {
-                Chat.sendError(p, Chat.ChatErrors.ARGCOUNT, "/setwarp (Warp Name) (Warp Type) (Permission without core. For public warp put guest otherwise put rak name)");
+                Chat.sendError(p, Chat.ChatErrors.ARGCOUNT, "/setwarp (Warp Name) (Warp Type) (Permission without core. For public warp put guest otherwise put rank name)");
             }
 
             if (args.length == 3) {
@@ -61,7 +61,7 @@ public class SetWarp implements CommandExecutor {
                         Chat.sendMessage(p, "Warps", "Successfully created the &b" + type + "&a warp called &b" + name);
                         break;
                     default:
-                        Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/setwarp (Warp Name) (Valid Warp Type) (Permission without core. For public warp put guest otherwise put rak name)- Use /warps for a list of warp types");
+                        Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/setwarp (Warp Name) (Valid Warp Type) (Permission without core. For public warp put guest otherwise put rank name)- Use /warps for a list of warp types");
                         break;
                 }
             }

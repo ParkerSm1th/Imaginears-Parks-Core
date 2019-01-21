@@ -28,7 +28,23 @@ commands:
   walkspeed:
     aliases: [groundspeed]
   build:
+  fixinventory:
+  getuuid:
+  reloadinventories:
+  tpcoord:
+    aliases: [tpc]
+  buildoffall:
 permissions:
+  core.fixinventory:
+    description: Permission
+  core.getuuid:
+    description: Permission
+  core.reloadinventories:
+    description: Permission
+  core.tpcoord:
+    description: Permission
+  core.buildoffall:
+    description: Permission
   core.buildmode:
     description: Permission
   core.edituser:
