@@ -19,8 +19,8 @@ public class Heal implements CommandExecutor {
 
         if (Permissions.checkPermissionMsg(p, "core.heal")) {
             if (args.length == 0) {
-                p.setHealth(10);
-                p.setFoodLevel(10);
+                p.setHealth(20);
+                p.setFoodLevel(20);
                 Chat.sendMessage(p, "Heal", "You've been healed");
             }
             if (args.length > 0) {

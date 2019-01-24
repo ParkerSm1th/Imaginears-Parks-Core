@@ -17,21 +17,12 @@ public class PlayerLeave implements Listener {
         Player p = e.getPlayer();
         if (p.getType() != EntityType.PLAYER) return;
 
-        if (!Build.buildMode.contains(p.getName())) {
-            InventoryManager.savePlayInventory(p);
-        } else {
-            Build.buildMode.remove(p.getName());
+        if (Build.checkBuildMode(p)) {
             InventoryManager.saveBuildInventory(p);
+        } else {
+            InventoryManager.savePlayInventory(p);
         }
         e.setQuitMessage(null);
-        if (p.hasPermission("core.staff") || p.hasPermission("core.character")) {
-            for (Player pls : Bukkit.getOnlinePlayers()) {
-                if (pls.hasPermission("core.staff")) {
-                    Chat.sendMessage(pls, "StaffAnnounce", "&b" + p.getName() + " &ahas clocked out");
-                }
-            }
-
-        }
     }
 
 }

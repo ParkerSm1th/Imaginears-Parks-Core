@@ -60,6 +60,10 @@ public class SetWarp implements CommandExecutor {
                         Warps.setWarp(name.toLowerCase(), type, perm, p.getLocation());
                         Chat.sendMessage(p, "Warps", "Successfully created the &b" + type + "&a warp called &b" + name);
                         break;
+                    case "resort":
+                        Warps.setWarp(name.toLowerCase(), type, perm, p.getLocation());
+                        Chat.sendMessage(p, "Warps", "Successfully created the &b" + type + "&a warp called &b" + name);
+                        break;
                     default:
                         Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/setwarp (Warp Name) (Valid Warp Type) (Permission without core. For public warp put guest otherwise put rank name)- Use /warps for a list of warp types");
                         break;

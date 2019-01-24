@@ -36,25 +36,23 @@ public class FixInventory implements CommandExecutor {
                 String type = args[1];
                 switch(type) {
                     case "play":
+                        if (!Build.checkBuildMode(target)) {
+                            Build.enableBuildMode(target);
+                        }
                         inventories.set(target.getUniqueId() + ".play", null);
                         InventoryManager.saveFile();
-                        if (!Build.buildMode.contains(target.getName())) {
-                            Build.buildMode.add(target.getName());
-                            InventoryManager.loadBuildInventory(target);
-                        }
                         ReloadInventories.reloadInventories();
-                        Chat.sendMessage(p, "Staff", "Fixed &b" + p.getName() + "&a's play inventory");
+                        Chat.sendMessage(p, "Staff", "Fixed &b" + target.getName() + "&a's play inventory");
                         Chat.sendMessage(target, "Staff", "Your play inventory has been reset, You may now use /build to go back to your play inventory");
                         break;
                     case "build":
+                        if (Build.checkBuildMode(target)) {
+                            Build.disableBuildMode(target);
+                        }
                         inventories.set(target.getUniqueId() + ".build", null);
                         InventoryManager.saveFile();
-                        if (Build.buildMode.contains(target.getName())) {
-                            Build.buildMode.remove(target.getName());
-                            InventoryManager.loadPlayInventory(target);
-                        }
                         ReloadInventories.reloadInventories();
-                        Chat.sendMessage(p, "Staff", "Fixed &b" + p.getName() + "&a's build inventory");
+                        Chat.sendMessage(p, "Staff", "Fixed &b" + target.getName() + "&a's build inventory");
                         Chat.sendMessage(target, "Staff", "Your build inventory has been reset, You may now use /build to go back to your build inventory");
                         break;
                     default:

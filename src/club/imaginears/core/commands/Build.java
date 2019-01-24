@@ -16,6 +16,42 @@ public class Build implements CommandExecutor {
 
     public static ArrayList<String> buildMode = new ArrayList<String>();
 
+    public static void enableBuildMode(Player p) {
+        if (p.getInventory().getItem(1) != null) {
+            if (p.getInventory().getItem(1).getItemMeta().getDisplayName().contains("Magic")) {
+                InventoryManager.savePlayInventory(p);
+                p.setGameMode(GameMode.CREATIVE);
+                InventoryManager.loadBuildInventory(p);
+            } else {
+                p.setGameMode(GameMode.CREATIVE);
+                InventoryManager.loadBuildInventory(p);
+            }
+        } else {
+            p.setGameMode(GameMode.CREATIVE);
+            InventoryManager.loadBuildInventory(p);
+        }
+
+        Chat.sendMessage(p, "Staff", "You are now in build mode");
+        buildMode.add(p.getName());
+    }
+
+    public static void disableBuildMode(Player p) {
+        InventoryManager.saveBuildInventory(p);
+        p.setGameMode(GameMode.ADVENTURE);
+        InventoryManager.loadPlayInventory(p);
+
+        Chat.sendMessage(p, "Staff", "You are no longer in build mode");
+        buildMode.remove(p.getName());
+    }
+
+    public static boolean checkBuildMode(Player p) {
+        if (buildMode.contains(p.getName())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
         if (!(sender instanceof Player)) {
@@ -25,18 +61,10 @@ public class Build implements CommandExecutor {
 
         if (Permissions.checkPermissionMsg(p, "core.buildmode")) {
             if (args.length == 0) {
-                if (buildMode.contains(p.getName())) {
-                    buildMode.remove(p.getName());
-                    InventoryManager.saveBuildInventory(p);
-                    InventoryManager.loadPlayInventory(p);
-                    p.setGameMode(GameMode.ADVENTURE);
-                    Chat.sendMessage(p, "Staff", "You are no longer in build mode");
+                if (checkBuildMode(p)) {
+                    disableBuildMode(p);
                 } else {
-                    buildMode.add(p.getName());
-                    InventoryManager.savePlayInventory(p);
-                    InventoryManager.loadBuildInventory(p);
-                    p.setGameMode(GameMode.CREATIVE);
-                    Chat.sendMessage(p, "Staff", "You are now in build mode");
+                    enableBuildMode(p);
                 }
             }
             if (args.length > 0 || args.length < 0) {

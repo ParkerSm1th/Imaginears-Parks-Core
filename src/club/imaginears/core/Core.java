@@ -10,6 +10,7 @@ import club.imaginears.core.utils.Console;
 import club.imaginears.core.utils.GUIs;
 import club.imaginears.core.utils.InventoryManager;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -105,10 +106,11 @@ public class Core extends JavaPlugin {
     public void saveInventories() {
         for (Player pname : Bukkit.getOnlinePlayers()) {
             Player p = Bukkit.getPlayer(pname.getName());
-            if (Build.buildMode.contains(pname.getName())) {
+            if (Build.buildMode.contains(p.getName())) {
                 Chat.sendMessage(p, "Staff", "The plugin is being reloaded, you will be taken out of build mode");
                 InventoryManager.saveBuildInventory(p);
                 Chat.sendMessage(p, "Staff", "Saved build");
+                p.setGameMode(GameMode.ADVENTURE);
                 InventoryManager.loadPlayInventory(p);
                 Chat.sendMessage(p, "Staff", "Out of build");
                 Build.buildMode.remove(p.getName());
@@ -164,6 +166,10 @@ public class Core extends JavaPlugin {
         Console.Log("Loaded heal command", Console.types.DEBUG);
         getCommand("speed").setExecutor(new Speed());
         Console.Log("Loaded speed command", Console.types.DEBUG);
+        getCommand("skull").setExecutor(new Skull());
+        Console.Log("Loaded skull command", Console.types.DEBUG);
+        getCommand("invsee").setExecutor(new InvSee());
+        Console.Log("Loaded invsee command", Console.types.DEBUG);
         Console.Log("Loaded commands..", Console.types.LOG);
     }
 

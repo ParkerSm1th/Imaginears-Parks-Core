@@ -21,14 +21,10 @@ public class BuildOffAll implements CommandExecutor {
 
         if (Permissions.checkPermissionMsg(p, "core.buildoffall")) {
             if (args.length == 0) {
-                for (Player pname : Bukkit.getOnlinePlayers()) {
-                    Player pl = Bukkit.getPlayer(pname.getName());
-                    if (Build.buildMode.contains(pname.getName())) {
+                for (Player pl : Bukkit.getOnlinePlayers()) {
+                    if (Build.checkBuildMode(pl)) {
                         Chat.sendMessage(pl, "Staff", "The plugin is being reloaded, you will be taken out of build mode");
-                        InventoryManager.saveBuildInventory(pl);
-                        p.setGameMode(GameMode.SURVIVAL);
-                        InventoryManager.loadPlayInventory(pl);
-                        Build.buildMode.remove(pl.getName());
+                        Build.disableBuildMode(pl);
                     } else {
                         InventoryManager.savePlayInventory(pl);
                     }

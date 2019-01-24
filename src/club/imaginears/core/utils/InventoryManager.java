@@ -105,7 +105,6 @@ public class InventoryManager implements Listener {
     }
 
     public static void loadBuildInventory(Player p) {
-        savePlayInventory(p);
         p.getInventory().clear();
         if (inventories.isSet(p.getUniqueId().toString() + ".build")) {
             try {

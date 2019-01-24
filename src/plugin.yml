@@ -37,7 +37,14 @@ commands:
   buildoffall:
   heal:
   speed:
+  invsee:
+  skull:
+    aliases: [head, gethead, getskull]
 permissions:
+  core.skull:
+    description: Permission
+  core.invsee:
+    description: Permission
   core.healothers:
     description: Permission
   core.speed:

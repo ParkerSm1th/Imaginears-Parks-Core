@@ -23,7 +23,7 @@ public class Warps implements CommandExecutor {
 
         if (Permissions.checkPermissionMsg(p, "core.warps")) {
             if (args.length > 1 || args.length < 1) {
-                Chat.sendError(p, Chat.ChatErrors.ARGCOUNT, "/warps (Type) - Warp types are as follows: ride, show, shop, event, park, and location");
+                Chat.sendError(p, Chat.ChatErrors.ARGCOUNT, "/warps (Type) - Warp types are as follows: ride, show, shop, event, park, location,and resort");
             }
             if (args.length == 1) {
                 String type = args[0].toLowerCase();
@@ -70,8 +70,15 @@ public class Warps implements CommandExecutor {
                             Chat.sendMessage(p, "Warps", "Currently there are no &b" + type + " &awarps");
                         }
                         break;
+                    case "resort":
+                        if (!club.imaginears.core.utils.Warps.getWarps(6).isEmpty()) {
+                            Chat.sendMessage(p, "Warps", "The current &b" + type + "&a warps are: &b" + String.join("&a, &b", club.imaginears.core.utils.Warps.getWarps(6)));
+                        } else {
+                            Chat.sendMessage(p, "Warps", "Currently there are no &b" + type + " &awarps");
+                        }
+                        break;
                     default:
-                        Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/warps (Type) - Warp types are as follows: ride, show, shop, event, park, and location");
+                        Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/warps (Type) - Warp types are as follows: ride, show, shop, event, park, location, and resort");
                         break;
                 }
             }

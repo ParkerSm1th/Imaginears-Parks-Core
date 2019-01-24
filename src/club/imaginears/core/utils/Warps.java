@@ -69,6 +69,8 @@ public class Warps {
                 return "park";
             case 5:
                 return "location";
+            case 6:
+                return "resort";
         }
         return null;
     }
@@ -114,6 +116,9 @@ public class Warps {
                 break;
             case "location":
                 newWarp.set("type", 5);
+                break;
+            case "resort":
+                newWarp.set("type", 6);
                 break;
         }
         saveFile();
