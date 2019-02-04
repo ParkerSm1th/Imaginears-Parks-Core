@@ -1,8 +1,12 @@
 package club.imaginears.core.utils;
 
+import club.imaginears.core.objects.Rank;
 import me.lucko.luckperms.LuckPerms;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class Permissions {
 
@@ -23,171 +27,137 @@ public class Permissions {
         }
     }
 
-    public static String getRankPrefix(Player p) {
+    public static Rank getRankFromLadder(Integer rank) {
+        switch(rank) {
+            case 0:
+                return Rank.GUEST;
+            case 1:
+                return Rank.SILVER;
+            case 2:
+                return Rank.GOLD;
+            case 3:
+                return Rank.PLATINUM;
+            case 4:
+                return Rank.PLATINUMPLUS;
+            case 5:
+                return Rank.SPECIALGUEST;
+            case 6:
+                return Rank.SECURITY;
+            case 7:
+                return Rank.PHOTOPASS;
+            case 8:
+                return Rank.CHARACTER;
+            case 9:
+                return Rank.CASTMEMBER;
+            case 10:
+                return Rank.COORDINATOR;
+            case 11:
+                return Rank.MANAGER;
+            case 12:
+                return Rank.DEVELOPER;
+            default:
+                return Rank.GUEST;
+        }
+    }
+
+    public static Rank getRank(Player p) {
         String group = LuckPerms.getApi().getUser(p.getUniqueId()).getPrimaryGroup();
         if (group.equalsIgnoreCase("default")) {
-            return "&f[&eGuest&f]";
+            return Rank.GUEST;
         } else if (group.equalsIgnoreCase("silver")) {
-            return "&f[&6Silver&f]";
+            return Rank.SILVER;
         } else if (group.equalsIgnoreCase("gold")) {
-            return "&f[&6Gold&f]";
+            return Rank.GOLD;
         } else if (group.equalsIgnoreCase("platinum")) {
-            return "&f[&6Platinum&f]";
+            return Rank.PLATINUM;
         } else if (group.equalsIgnoreCase("platinum+")) {
-            return "&f[&6Platinum+&f]";
+            return Rank.PLATINUMPLUS;
         } else if (group.equalsIgnoreCase("specialguest")) {
-            return "&0[&4Special Guest&0]";
+            return Rank.SPECIALGUEST;
         } else if (group.equalsIgnoreCase("security")) {
-            return "&f[&4Security&f]";
+            return Rank.SECURITY;
         } else if (group.equalsIgnoreCase("photopass")) {
-            return "&f[&3Photopass&f]";
+            return Rank.PHOTOPASS;
         } else if (group.equalsIgnoreCase("character")) {
-            return "&f[&6Character&f]";
+            return Rank.CHARACTER;
         } else if (group.equalsIgnoreCase("castmember")) {
-            return "&f[&3Cast Member&f]";
+            return Rank.CASTMEMBER;
         } else if (group.equalsIgnoreCase("coordinator")) {
-            return "&f[&cCoordinator&f]";
+            return Rank.COORDINATOR;
         } else if (group.equalsIgnoreCase("manager")) {
-            return "&f[&aManager&f]";
+            return Rank.MANAGER;
         } else if (group.equalsIgnoreCase("developer")) {
-            return "&f[&5Developer&f]";
+            return Rank.DEVELOPER;
         } else {
-            return "&f[&eGuest&f]";
+            return Rank.GUEST;
         }
     }
 
-    public static String getOfflineRankPrefix(OfflinePlayer p) {
+    public static Rank getRankUUID(String uuid) {
+        String group = LuckPerms.getApi().getUser(UUID.fromString(uuid)).getPrimaryGroup();
+        if (group.equalsIgnoreCase("default")) {
+            return Rank.GUEST;
+        } else if (group.equalsIgnoreCase("silver")) {
+            return Rank.SILVER;
+        } else if (group.equalsIgnoreCase("gold")) {
+            return Rank.GOLD;
+        } else if (group.equalsIgnoreCase("platinum")) {
+            return Rank.PLATINUM;
+        } else if (group.equalsIgnoreCase("platinum+")) {
+            return Rank.PLATINUMPLUS;
+        } else if (group.equalsIgnoreCase("specialguest")) {
+            return Rank.SPECIALGUEST;
+        } else if (group.equalsIgnoreCase("security")) {
+            return Rank.SECURITY;
+        } else if (group.equalsIgnoreCase("photopass")) {
+            return Rank.PHOTOPASS;
+        } else if (group.equalsIgnoreCase("character")) {
+            return Rank.CHARACTER;
+        } else if (group.equalsIgnoreCase("castmember")) {
+            return Rank.CASTMEMBER;
+        } else if (group.equalsIgnoreCase("coordinator")) {
+            return Rank.COORDINATOR;
+        } else if (group.equalsIgnoreCase("manager")) {
+            return Rank.MANAGER;
+        } else if (group.equalsIgnoreCase("developer")) {
+            return Rank.DEVELOPER;
+        } else {
+            return Rank.GUEST;
+        }
+    }
+
+    public static Rank getOfflineRank(OfflinePlayer p) {
         String group = LuckPerms.getApi().getUser(p.getUniqueId()).getPrimaryGroup();
         if (group.equalsIgnoreCase("default")) {
-            return "&f[&eGuest&f]";
+            return Rank.GUEST;
         } else if (group.equalsIgnoreCase("silver")) {
-            return "&f[&6Silver&f]";
+            return Rank.SILVER;
         } else if (group.equalsIgnoreCase("gold")) {
-            return "&f[&6Gold&f]";
+            return Rank.GOLD;
         } else if (group.equalsIgnoreCase("platinum")) {
-            return "&f[&6Platinum&f]";
+            return Rank.PLATINUM;
         } else if (group.equalsIgnoreCase("platinum+")) {
-            return "&f[&6Platinum+&f]";
+            return Rank.PLATINUMPLUS;
         } else if (group.equalsIgnoreCase("specialguest")) {
-            return "&0[&4Special Guest&0]";
+            return Rank.SPECIALGUEST;
         } else if (group.equalsIgnoreCase("security")) {
-            return "&f[&4Security&f]";
+            return Rank.SECURITY;
         } else if (group.equalsIgnoreCase("photopass")) {
-            return "&f[&3Photopass&f]";
+            return Rank.PHOTOPASS;
         } else if (group.equalsIgnoreCase("character")) {
-            return "&f[&6Character&f]";
+            return Rank.CHARACTER;
         } else if (group.equalsIgnoreCase("castmember")) {
-            return "&f[&3Cast Member&f]";
+            return Rank.CASTMEMBER;
         } else if (group.equalsIgnoreCase("coordinator")) {
-            return "&f[&cCoordinator&f]";
+            return Rank.COORDINATOR;
         } else if (group.equalsIgnoreCase("manager")) {
-            return "&f[&aManager&f]";
+            return Rank.MANAGER;
         } else if (group.equalsIgnoreCase("developer")) {
-            return "&f[&5Developer&f]";
+            return Rank.DEVELOPER;
         } else {
-            return "&f[&eGuest&f]";
+            return Rank.GUEST;
         }
     }
 
-    public static String getTextRankPrefix(String s) {
-        String group = s;
-        if (group.equalsIgnoreCase("default")) {
-            return "&f[&eGuest&f]";
-        } else if (group.equalsIgnoreCase("silver")) {
-            return "&f[&6Silver&f]";
-        } else if (group.equalsIgnoreCase("gold")) {
-            return "&f[&6Gold&f]";
-        } else if (group.equalsIgnoreCase("platinum")) {
-            return "&f[&6Platinum&f]";
-        } else if (group.equalsIgnoreCase("platinum+")) {
-            return "&f[&6Platinum+&f]";
-        } else if (group.equalsIgnoreCase("specialguest")) {
-            return "&0[&4Special Guest&0]";
-        } else if (group.equalsIgnoreCase("security")) {
-            return "&f[&4Security&f]";
-        } else if (group.equalsIgnoreCase("photopass")) {
-            return "&f[&3Photopass&f]";
-        } else if (group.equalsIgnoreCase("character")) {
-            return "&f[&6Character&f]";
-        } else if (group.equalsIgnoreCase("castmember")) {
-            return "&f[&3Cast Member&f]";
-        } else if (group.equalsIgnoreCase("coordinator")) {
-            return "&f[&cCoordinator&f]";
-        } else if (group.equalsIgnoreCase("manager")) {
-            return "&f[&aManager&f]";
-        } else if (group.equalsIgnoreCase("developer")) {
-            return "&f[&5Developer&f]";
-        } else {
-            return "&f[&eGuest&f]";
-        }
-    }
-
-    public static String getRankColor(Player p) {
-        String group = LuckPerms.getApi().getUser(p.getUniqueId()).getPrimaryGroup();
-        if (group.equalsIgnoreCase("default")) {
-            return "&e";
-        } else if (group.equalsIgnoreCase("silver")) {
-            return "&6";
-        } else if (group.equalsIgnoreCase("gold")) {
-            return "&6";
-        } else if (group.equalsIgnoreCase("platinum")) {
-            return "&6";
-        } else if (group.equalsIgnoreCase("platinum+")) {
-            return "&6";
-        } else if (group.equalsIgnoreCase("specialguest")) {
-            return "&4";
-        } else if (group.equalsIgnoreCase("security")) {
-            return "&4";
-        } else if (group.equalsIgnoreCase("photopass")) {
-            return "&3";
-        } else if (group.equalsIgnoreCase("character")) {
-            return "&6";
-        } else if (group.equalsIgnoreCase("castmember")) {
-            return "&3";
-        } else if (group.equalsIgnoreCase("coordinator")) {
-            return "&c";
-        } else if (group.equalsIgnoreCase("manager")) {
-            return "&a";
-        } else if (group.equalsIgnoreCase("developer")) {
-            return "&5";
-        } else {
-            return "&e";
-        }
-
-    }
-
-    public static String getChatColor(Player p) {
-        String group = LuckPerms.getApi().getUser(p.getUniqueId()).getPrimaryGroup();
-        if (group.equalsIgnoreCase("default")) {
-            return "&f";
-        } else if (group.equalsIgnoreCase("silver")) {
-            return "&f";
-        } else if (group.equalsIgnoreCase("gold")) {
-            return "&f";
-        } else if (group.equalsIgnoreCase("platinum")) {
-            return "&f";
-        } else if (group.equalsIgnoreCase("platinum+")) {
-            return "&f";
-        } else if (group.equalsIgnoreCase("specialguest")) {
-            return "&f";
-        } else if (group.equalsIgnoreCase("security")) {
-            return "&f";
-        } else if (group.equalsIgnoreCase("photopass")) {
-            return "&f";
-        } else if (group.equalsIgnoreCase("character")) {
-            return "&6";
-        } else if (group.equalsIgnoreCase("castmember")) {
-            return "&f";
-        } else if (group.equalsIgnoreCase("coordinator")) {
-            return "&f";
-        } else if (group.equalsIgnoreCase("manager")) {
-            return "&f";
-        } else if (group.equalsIgnoreCase("developer")) {
-            return "&f";
-        } else {
-            return "&f";
-        }
-
-    }
 
 }

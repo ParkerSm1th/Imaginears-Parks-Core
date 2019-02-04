@@ -1,5 +1,7 @@
 package club.imaginears.core.utils;
 
+import club.imaginears.core.objects.Rank;
+import club.imaginears.core.objects.User;
 import com.google.common.collect.Lists;
 import me.lucko.luckperms.LuckPerms;
 import net.md_5.bungee.api.ChatColor;
@@ -75,6 +77,7 @@ public class GUIs implements Listener {
         if (e.getClickedInventory().getName().contains("- Rank")) {
             String itemname = e.getCurrentItem().getItemMeta().getDisplayName().toString().toLowerCase();
             OfflinePlayer target = Bukkit.getOfflinePlayer(e.getCurrentItem().getItemMeta().getLocalizedName().toString());
+            User user = Players.getUser(target.getName());
             if (e.getCurrentItem().getItemMeta().hasDisplayName()) {
                 e.setCancelled(true);
             }
@@ -84,80 +87,93 @@ public class GUIs implements Listener {
             if (itemname.contains("guest")) {
                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                 Bukkit.dispatchCommand(console, "perms user " + target.getName().toString() + " parent set default");
-                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Permissions.getTextRankPrefix("default"));
+                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Rank.fromString("default").getPrefix());
+                user.setRank(Rank.fromString("guest"));
                 p.closeInventory();
             }
             if (itemname.contains("silver")) {
                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                 Bukkit.dispatchCommand(console, "perms user " + target.getName().toString() + " parent set silver");
-                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Permissions.getTextRankPrefix("silver"));
+                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Rank.fromString("silver").getPrefix());
+                user.setRank(Rank.fromString("silver"));
                 p.closeInventory();
             }
             if (itemname.contains("gold")) {
                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                 Bukkit.dispatchCommand(console, "perms user " + target.getName().toString() + " parent set gold");
-                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Permissions.getTextRankPrefix("gold"));
+                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Rank.fromString("gold").getPrefix());
+                user.setRank(Rank.fromString("gold"));
                 p.closeInventory();
             }
             if (itemname.contains("platinum+")) {
                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                 Bukkit.dispatchCommand(console, "perms user " + target.getName().toString() + " parent set platinum+");
-                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Permissions.getTextRankPrefix("platinum+"));
+                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Rank.fromString("platinum+").getPrefix());
+                user.setRank(Rank.fromString("platinum+"));
                 p.closeInventory();
                 return;
             }
             if (itemname.contains("platinum")) {
                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                 Bukkit.dispatchCommand(console, "perms user " + target.getName().toString() + " parent set platinum");
-                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Permissions.getTextRankPrefix("platinum"));
+                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Rank.fromString("platinum").getPrefix());
+                user.setRank(Rank.fromString("platinum"));
                 p.closeInventory();
             }
             if (itemname.contains("special guest")) {
                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                 Bukkit.dispatchCommand(console, "perms user " + target.getName().toString() + " parent set specialguest");
-                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Permissions.getTextRankPrefix("specialguest"));
+                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Rank.fromString("specialguest").getPrefix());
+                user.setRank(Rank.fromString("specialguest"));
                 p.closeInventory();
             }
             if (itemname.contains("security")) {
                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                 Bukkit.dispatchCommand(console, "perms user " + target.getName().toString() + " parent set security");
-                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Permissions.getTextRankPrefix("security"));
+                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Rank.fromString("security").getPrefix());
+                user.setRank(Rank.fromString("security"));
                 p.closeInventory();
             }
             if (itemname.contains("character")) {
                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                 Bukkit.dispatchCommand(console, "perms user " + target.getName().toString() + " parent set character");
-                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Permissions.getTextRankPrefix("character"));
+                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Rank.fromString("character").getPrefix());
+                user.setRank(Rank.fromString("character"));
                 p.closeInventory();
             }
             if (itemname.contains("photopass")) {
                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                 Bukkit.dispatchCommand(console, "perms user " + target.getName().toString() + " parent set photopass");
-                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Permissions.getTextRankPrefix("photopass"));
+                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Rank.fromString("photopass").getPrefix());
+                user.setRank(Rank.fromString("photopass"));
                 p.closeInventory();
             }
             if (itemname.contains("cast member")) {
                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                 Bukkit.dispatchCommand(console, "perms user " + target.getName().toString() + " parent set castmember");
-                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Permissions.getTextRankPrefix("castmember"));
+                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Rank.fromString("castmember").getPrefix());
+                user.setRank(Rank.fromString("castmember"));
                 p.closeInventory();
             }
             if (itemname.contains("coordinator")) {
                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                 Bukkit.dispatchCommand(console, "perms user " + target.getName().toString() + " parent set coordinator");
-                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Permissions.getTextRankPrefix("coordinator"));
+                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Rank.fromString("coordinator").getPrefix());
+                user.setRank(Rank.fromString("coordinator"));
                 p.closeInventory();
             }
             if (itemname.contains("developer")) {
                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                 Bukkit.dispatchCommand(console, "perms user " + target.getName().toString() + " parent set developer");
-                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Permissions.getTextRankPrefix("developer"));
+                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Rank.fromString("developer").getPrefix());
+                user.setRank(Rank.fromString("developer"));
                 p.closeInventory();
             }
             if (itemname.contains("manager")) {
                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                 Bukkit.dispatchCommand(console, "perms user " + target.getName().toString() + " parent set manager");
-                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Permissions.getTextRankPrefix("manager"));
+                Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Rank.fromString("manager").getPrefix());
+                user.setRank(Rank.fromString("manager"));
                 p.closeInventory();
             }
 
@@ -237,7 +253,7 @@ public class GUIs implements Listener {
         profilelore.add(" ");
         String prefix = null;
         try {
-            prefix = ChatColor.translateAlternateColorCodes('&', Permissions.getOfflineRankPrefix(target));
+            prefix = ChatColor.translateAlternateColorCodes('&', Permissions.getOfflineRank(target).getPrefix());
         } catch(NullPointerException ex) {
             prefix = ChatColor.translateAlternateColorCodes('&', "&f[&eGuest&f]");
         }

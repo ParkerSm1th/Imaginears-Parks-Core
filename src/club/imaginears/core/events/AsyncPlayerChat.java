@@ -1,6 +1,8 @@
 package club.imaginears.core.events;
 
+import club.imaginears.core.objects.User;
 import club.imaginears.core.utils.Permissions;
+import club.imaginears.core.utils.Players;
 import mc.cyberplex.ChatManager.ChatManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,7 +18,9 @@ public class AsyncPlayerChat implements Listener {
     public void onChat(AsyncPlayerChatEvent e) {
 
         Player p = e.getPlayer();
-        e.setFormat(ChatColor.translateAlternateColorCodes('&', Permissions.getRankPrefix(p) + "&7 " + p.getDisplayName() + ": " + Permissions.getChatColor(p) + e.getMessage()));
+        User user = Players.getUser(p.getName());
+
+        e.setFormat(ChatColor.translateAlternateColorCodes('&', user.getPrefix() + "&7 " + user.getName() + ": " + user.getChatColor() + e.getMessage()));
 
     }
 }

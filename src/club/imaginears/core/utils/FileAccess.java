@@ -16,6 +16,10 @@ public class FileAccess {
         return Core.getInstance().inventories;
     }
 
+    public static FileConfiguration getWhitelist() {
+        return Core.getInstance().whitelist;
+    }
+
     public static boolean isSet(FileConfiguration file, String path) {
         return file.isSet(path);
     }

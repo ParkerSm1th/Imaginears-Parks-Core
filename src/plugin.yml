@@ -38,10 +38,18 @@ commands:
   heal:
   speed:
   invsee:
+  whitelistmanager:
+    aliases: [wm, wlm, whitelist, wl]
   skull:
     aliases: [head, gethead, getskull]
+  balance:
+    aliases: [bal]
 permissions:
+  core.balance:
+    description: Permission
   core.skull:
+    description: Permission
+  core.whitelistmanager:
     description: Permission
   core.invsee:
     description: Permission

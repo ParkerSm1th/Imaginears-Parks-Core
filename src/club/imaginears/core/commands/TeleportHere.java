@@ -1,7 +1,9 @@
 package club.imaginears.core.commands;
 
+import club.imaginears.core.objects.User;
 import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.Permissions;
+import club.imaginears.core.utils.Players;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,6 +18,7 @@ public class TeleportHere implements CommandExecutor {
             return true;
         }
         Player p = (Player) sender;
+        User user = Players.getUser(p.getName());
 
         if (Permissions.checkPermissionMsg(p, "core.tphere")) {
             if (args.length > 1 || args.length < 1) {

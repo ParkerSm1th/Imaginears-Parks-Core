@@ -1,5 +1,6 @@
 package club.imaginears.core.commands;
 
+import club.imaginears.core.objects.Rank;
 import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.Permissions;
 import club.imaginears.core.utils.Warps;
@@ -29,7 +30,7 @@ public class Warp implements CommandExecutor {
                         p.teleport(Warps.getWarp(name));
                         Chat.sendMessage(p, "Warps", "You've arrived at &b" + name + " &a(" + Warps.getWarpType(name) + ")");
                     } else {
-                        Chat.sendError(p, Chat.ChatErrors.COMMON, "You must have the rank of " + Permissions.getTextRankPrefix(Warps.getWarpPerm(name)) + " &cto use that warp.");
+                        Chat.sendError(p, Chat.ChatErrors.COMMON, "You must have the rank of " + Rank.fromString(Warps.getWarpPerm(name)).getPrefix() + " &cto use that warp.");
                     }
                 } else {
                     Chat.sendError(p, Chat.ChatErrors.COMMON, "That warp does not exist, Try /warps for a list of warps");
@@ -48,7 +49,7 @@ public class Warp implements CommandExecutor {
                                 Chat.sendMessage(target, "Warps", "You've arrived at &b" + name + " &a(" + Warps.getWarpType(name) + ")");
                                 Chat.sendMessage(p, "Warps", "Warped that player");
                             } else {
-                                Chat.sendError(p, Chat.ChatErrors.COMMON, "You must have the rank of " + Permissions.getTextRankPrefix(Warps.getWarpPerm(name)) + " &cto use that warp.");
+                                Chat.sendError(p, Chat.ChatErrors.COMMON, "You must have the rank of " + Rank.fromString(Warps.getWarpPerm(name)).getPrefix() + " &cto use that warp.");
                             }
                         } else {
                             Chat.sendError(p, Chat.ChatErrors.COMMON, "That warp does not exist, Try /warps for a list of warps");

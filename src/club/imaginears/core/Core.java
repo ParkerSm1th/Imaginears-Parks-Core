@@ -5,10 +5,12 @@ import club.imaginears.core.events.AsyncPlayerChat;
 import club.imaginears.core.events.PlayerCommandPreprocess;
 import club.imaginears.core.events.PlayerJoin;
 import club.imaginears.core.events.PlayerLeave;
+import club.imaginears.core.objects.User;
 import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.Console;
 import club.imaginears.core.utils.GUIs;
 import club.imaginears.core.utils.InventoryManager;
+import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -20,17 +22,25 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public class Core extends JavaPlugin {
 
 
     private static Core instance;
     public static Boolean debug = true;
+    private static HashMap<UUID, User> users = new HashMap<>();
     public File warpsFile;
     public FileConfiguration warps;
 
     public File inventoriesFile;
     public FileConfiguration inventories;
+
+    public File whitelistFile;
+    public FileConfiguration whitelist;
 
     private static club.imaginears.core.Core c;
 
@@ -49,6 +59,7 @@ public class Core extends JavaPlugin {
     public void onDisable() {
         instance = null;
         saveInventories();
+        club.imaginears.core.utils.WhitelistManager.saveFile();
         Console.Log("Stopping core..", Console.types.LOG);
     }
 
@@ -56,13 +67,45 @@ public class Core extends JavaPlugin {
         return instance;
     }
 
+    public static HashMap<UUID, User> getUserMap() {
+        return new HashMap<>(users);
+    }
+
+    public static List<User> getUsers() {
+        return new ArrayList<>(users.values());
+    }
+
+    public static void addUser(User user) {
+        Preconditions.checkNotNull(user.getUniqueId());
+        users.remove(user.getUniqueId());
+        users.put(user.getUniqueId(), user);
+    }
+
+    public static User getUser(String name) {
+        for (User user : new ArrayList<>(users.values())) {
+            if (user.getName().equalsIgnoreCase(name)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public static User getUser(UUID uuid) {
+        return users.get(uuid);
+    }
+
+    public static void deleteUser(UUID uuid) {
+        users.remove(uuid);
+    }
 
     public void createFiles() {
         Console.Log("Loading files", Console.types.LOG);
         createWarpsFile();
         Console.Log("Loaded warps file", Console.types.LOG);
         createInventoriesFile();
-        Console.Log("Loaded warps file", Console.types.LOG);
+        Console.Log("Loaded inventories file", Console.types.LOG);
+        createWhitelistFile();
+        Console.Log("Loaded whitelist file", Console.types.LOG);
     }
 
     public FileConfiguration getWarpsFile() {
@@ -79,6 +122,25 @@ public class Core extends JavaPlugin {
         warps = new YamlConfiguration();
         try {
             warps.load(warpsFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public FileConfiguration getWhitelistFile() {
+        return this.whitelist;
+    }
+
+    private void createWhitelistFile() {
+        whitelistFile = new File(getDataFolder(), "whitelist.yml");
+        if (!whitelistFile.exists()) {
+            whitelistFile.getParentFile().mkdirs();
+            saveResource("whitelist.yml", false);
+        }
+
+        whitelist = new YamlConfiguration();
+        try {
+            whitelist.load(whitelistFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -170,6 +232,10 @@ public class Core extends JavaPlugin {
         Console.Log("Loaded skull command", Console.types.DEBUG);
         getCommand("invsee").setExecutor(new InvSee());
         Console.Log("Loaded invsee command", Console.types.DEBUG);
+        getCommand("whitelistmanager").setExecutor(new WhitelistManager());
+        Console.Log("Loaded whitelistmanager command", Console.types.DEBUG);
+        getCommand("balance").setExecutor(new Balance());
+        Console.Log("Loaded balance command", Console.types.DEBUG);
         Console.Log("Loaded commands..", Console.types.LOG);
     }
 
