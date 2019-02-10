@@ -253,6 +253,8 @@ public class Core extends JavaPlugin {
         Console.Log("Loaded setbalance command", Console.types.DEBUG);
         getCommand("pay").setExecutor(new Pay());
         Console.Log("Loaded pay command", Console.types.DEBUG);
+        getCommand("reward").setExecutor(new Reward());
+        Console.Log("Loaded reward command", Console.types.DEBUG);
         Console.Log("Loaded commands..", Console.types.LOG);
     }
 

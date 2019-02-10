@@ -6,12 +6,13 @@ import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.MySQL;
 import club.imaginears.core.utils.Permissions;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Pay implements CommandExecutor {
+public class Reward implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
@@ -21,27 +22,22 @@ public class Pay implements CommandExecutor {
         Player p = (Player) sender;
         User u = Core.getUser(p.getUniqueId());
 
-        if (Permissions.checkPermissionMsg(p, "core.pay")) {
+        if (Permissions.checkPermissionMsg(p, "core.reward")) {
             if (args.length > 2 || args.length < 2) {
-                Chat.sendError(p, Chat.ChatErrors.ARGCOUNT, "/pay (Player) (Amount)");
+                Chat.sendError(p, Chat.ChatErrors.ARGCOUNT, "/reward (Player) (Amount)");
             }
             if (args.length == 2) {
                 Player target = Bukkit.getPlayer(args[0]);
-                if (target == null) {
-                    Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/pay (Online Player) (Amount)");
-                    return true;
-                }
                 Float amount = Float.parseFloat(args[1]);
-                User targetUser = Core.getUser(target.getUniqueId());
-                if (u.getBalance() < amount) {
-                    Chat.sendError(p, Chat.ChatErrors.COMMON, "You do not have &b$" + amount + "&c!");
+                if (target == null) {
+                    Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/reward (Online Player) (Amount)");
                     return true;
                 }
-                u.subtractFromBalance(amount);
+                User targetUser = Core.getUser(target.getUniqueId());
                 targetUser.addToBalance(amount);
-                MySQL.logTransaction(p.getUniqueId().toString(), target.getUniqueId().toString(), amount);
-                Chat.sendMessage(p, "Economy", "You have paid &b" + target.getName() + "&a, &b$" + amount);
-                Chat.sendMessage(target, "Economy", "You have been given &b$" + amount + " &afrom &b" + target.getName());
+                MySQL.logTransaction("SERVER", target.getUniqueId().toString(), amount);
+                Chat.sendMessage(p, "Economy", "Successfully rewarded &b" + target.getName() + " &awith &b$" + amount);
+                Chat.sendMessage(p, "Economy", "&b$" + amount + " &ahas been added to your account");
             }
 
         }

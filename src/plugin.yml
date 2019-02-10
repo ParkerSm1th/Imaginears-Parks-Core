@@ -47,7 +47,10 @@ commands:
   charge:
   pay:
   setbalance:
+  reward:
 permissions:
+  core.reward:
+    description: Permission
   core.pay:
     description: Permission
   core.setbalance:
