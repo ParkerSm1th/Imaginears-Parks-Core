@@ -32,6 +32,11 @@ public class PlayerJoin implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        if (p.getType() != EntityType.PLAYER) return;
+        if (!MySQL.checkPlayerExists(p)) {
+            MySQL.setupPlayer(p);
+        }
         try {
             UUID uuid = e.getPlayer().getUniqueId();
             Core.deleteUser(uuid);
@@ -41,12 +46,10 @@ public class PlayerJoin implements Listener {
             ex.printStackTrace();
             e.getPlayer().kickPlayer(ChatColor.translateAlternateColorCodes('&', "&bSecurity" + "&7 » &cAn error occurred while you were logging in. You may now rejoin!"));
         }
-        Player p = e.getPlayer();
-        if (p.getType() != EntityType.PLAYER) return;
 
-        if (!MySQL.checkPlayerExists(p)) {
-            MySQL.setupPlayer(p);
-        }
+
+
+
 
         Chat.sendMessage(p, "Welcome", "Welcome to &b&lWalt Disney World&r&a!");
         e.setJoinMessage(null);

@@ -44,7 +44,16 @@ commands:
     aliases: [head, gethead, getskull]
   balance:
     aliases: [bal]
+  charge:
+  pay:
+  setbalance:
 permissions:
+  core.pay:
+    description: Permission
+  core.setbalance:
+    description: Permission
+  core.charge:
+    description: Permission
   core.balance:
     description: Permission
   core.skull:

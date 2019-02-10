@@ -1,6 +1,7 @@
 package club.imaginears.core.objects;
 
 
+import club.imaginears.core.utils.MySQL;
 import club.imaginears.core.utils.Permissions;
 import org.bukkit.entity.Player;
 
@@ -42,7 +43,6 @@ public class User {
         return this.rank.chatColor;
     }
 
-
     public Rank getRank() {
         return rank;
     }
@@ -65,6 +65,17 @@ public class User {
 
     public void setBalance(Float balance) {
         this.balance = balance;
+        MySQL.setBalance(this.player, balance);
+    }
+
+    public void addToBalance(Float balance) {
+        this.balance = this.balance + balance;
+        MySQL.addToBalance(this.player, balance);
+    }
+
+    public void subtractFromBalance(Float balance) {
+        this.balance = this.balance - balance;
+        MySQL.subtractFromBalance(this.player, balance);
     }
 
     public void setUsername(String username) {

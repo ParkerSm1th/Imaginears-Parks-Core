@@ -88,7 +88,7 @@ public class GUIs implements Listener {
                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                 Bukkit.dispatchCommand(console, "perms user " + target.getName().toString() + " parent set default");
                 Chat.sendMessage(p, "Permissions", "Successfully updated " + target.getName().toString() + "'s rank to " + Rank.fromString("default").getPrefix());
-                user.setRank(Rank.fromString("guest"));
+                user.setRank(Rank.fromString("default"));
                 p.closeInventory();
             }
             if (itemname.contains("silver")) {

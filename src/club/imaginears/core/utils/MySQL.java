@@ -6,6 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.sql.*;
+import java.util.Date;
 
 public class MySQL {
 
@@ -37,6 +38,116 @@ public class MySQL {
         } catch (SQLException e) {
             e.printStackTrace();
             return (float) 0.0;
+        }
+    }
+
+    public static void setBalance(Player u, Float bal) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement sql = connection.prepareStatement("SELECT balance FROM server.economy WHERE uuid=?");
+            sql.setString(1, u.getUniqueId().toString());
+            ResultSet result = sql.executeQuery();
+            if (!result.next()) {
+                result.close();
+                sql.close();
+            }
+            Float oldBalance = result.getFloat("balance");
+            result.close();
+            sql.close();
+            PreparedStatement pl = connection.prepareStatement("UPDATE server.economy SET balance = ?, last_balance = ? WHERE uuid = ?");
+            pl.setFloat(1, bal);
+            pl.setFloat(2, oldBalance);
+            pl.setString(3, u.getUniqueId().toString());
+            pl.execute();
+            pl.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setOfflineBalance(OfflinePlayer u, Float bal) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement sql = connection.prepareStatement("SELECT balance FROM server.economy WHERE uuid=?");
+            sql.setString(1, u.getUniqueId().toString());
+            ResultSet result = sql.executeQuery();
+            if (!result.next()) {
+                result.close();
+                sql.close();
+            }
+            Float oldBalance = result.getFloat("balance");
+            result.close();
+            sql.close();
+            PreparedStatement pl = connection.prepareStatement("UPDATE server.economy SET balance = ?, last_balance = ? WHERE uuid = ?");
+            pl.setFloat(1, bal);
+            pl.setFloat(2, oldBalance);
+            pl.setString(3, u.getUniqueId().toString());
+            pl.execute();
+            pl.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addToBalance(Player u, Float amount) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement sql = connection.prepareStatement("SELECT balance FROM server.economy WHERE uuid=?");
+            sql.setString(1, u.getUniqueId().toString());
+            ResultSet result = sql.executeQuery();
+            if (!result.next()) {
+                result.close();
+                sql.close();
+            }
+            Float oldBalance = result.getFloat("balance");
+            result.close();
+            sql.close();
+            Float bal = oldBalance + amount;
+            PreparedStatement pl = connection.prepareStatement("UPDATE server.economy SET balance = ?, last_balance = ? WHERE uuid = ?");
+            pl.setFloat(1, bal);
+            pl.setFloat(2, oldBalance);
+            pl.setString(3, u.getUniqueId().toString());
+            pl.execute();
+            pl.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void subtractFromBalance(Player u, Float amount) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement sql = connection.prepareStatement("SELECT balance FROM server.economy WHERE uuid=?");
+            sql.setString(1, u.getUniqueId().toString());
+            ResultSet result = sql.executeQuery();
+            if (!result.next()) {
+                result.close();
+                sql.close();
+            }
+            Float oldBalance = Float.parseFloat(result.getString("balance"));
+            result.close();
+            sql.close();
+            Float bal = oldBalance - amount;
+            PreparedStatement pl = connection.prepareStatement("UPDATE server.economy SET balance = ?, last_balance = ? WHERE uuid = ?");
+            pl.setFloat(1, bal);
+            pl.setFloat(2, oldBalance);
+            pl.setString(3, u.getUniqueId().toString());
+            pl.execute();
+            pl.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void logTransaction(String UUID1, String UUID2, Float amount) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement pl = connection.prepareStatement("INSERT INTO server.transactions (from_uuid, to_uuid, amount, time) VALUES (?, ?, ?, ?)");
+            pl.setString(1, UUID1);
+            pl.setString(2, UUID2);
+            pl.setFloat(3, amount);
+            Date date = new Date();
+            long timeMilli = date.getTime();
+            pl.setString(4, Long.toString(timeMilli));
+            pl.execute();
+            pl.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -80,6 +191,26 @@ public class MySQL {
         }
     }
 
+    public static Boolean checkPlayerExistsOffline(OfflinePlayer p) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement sql = connection.prepareStatement("SELECT id FROM server.player_data WHERE uuid=?");
+            sql.setString(1, p.getUniqueId() + "");
+            ResultSet result = sql.executeQuery();
+            if (!result.next()) {
+                result.close();
+                sql.close();
+                return false;
+            }
+            String item = result.getString("id");
+            result.close();
+            sql.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static void userSQLGrab(User u) {
         try (Connection connection = getConnection()) {
             PreparedStatement sql = connection.prepareStatement("SELECT * FROM server.economy WHERE uuid=?");
@@ -103,8 +234,8 @@ public class MySQL {
         try (Connection connection = getConnection()) {
             PreparedStatement sql = connection.prepareStatement("INSERT INTO server.economy (uuid, balance, last_balance) VALUES (?,?,?)");
             sql.setString(1, p.getUniqueId().toString());
-            sql.setInt(2, 0);
-            sql.setInt(3, 0);
+            sql.setFloat(2, (float) 0.0);
+            sql.setFloat(3, (float) 0.0);
             sql.execute();
             sql.close();
 

@@ -1,15 +1,14 @@
 package club.imaginears.core;
 
 import club.imaginears.core.commands.*;
+import club.imaginears.core.commands.Warps;
+import club.imaginears.core.commands.WhitelistManager;
 import club.imaginears.core.events.AsyncPlayerChat;
 import club.imaginears.core.events.PlayerCommandPreprocess;
 import club.imaginears.core.events.PlayerJoin;
 import club.imaginears.core.events.PlayerLeave;
 import club.imaginears.core.objects.User;
-import club.imaginears.core.utils.Chat;
-import club.imaginears.core.utils.Console;
-import club.imaginears.core.utils.GUIs;
-import club.imaginears.core.utils.InventoryManager;
+import club.imaginears.core.utils.*;
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -53,10 +52,22 @@ public class Core extends JavaPlugin {
         registerCommands();
         registerEvents();
 
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            Players.joinSetup(p);
+        }
+
     }
 
     @Override
     public void onDisable() {
+        for (Player pl : Bukkit.getOnlinePlayers()) {
+            if (Build.checkBuildMode(pl)) {
+                Chat.sendMessage(pl, "Staff", "The plugin is being reloaded, you will be taken out of build mode");
+                Build.disableBuildMode(pl);
+            } else {
+                InventoryManager.savePlayInventory(pl);
+            }
+        }
         instance = null;
         saveInventories();
         club.imaginears.core.utils.WhitelistManager.saveFile();
@@ -236,6 +247,12 @@ public class Core extends JavaPlugin {
         Console.Log("Loaded whitelistmanager command", Console.types.DEBUG);
         getCommand("balance").setExecutor(new Balance());
         Console.Log("Loaded balance command", Console.types.DEBUG);
+        getCommand("charge").setExecutor(new Charge());
+        Console.Log("Loaded charge command", Console.types.DEBUG);
+        getCommand("setbalance").setExecutor(new SetBalance());
+        Console.Log("Loaded setbalance command", Console.types.DEBUG);
+        getCommand("pay").setExecutor(new Pay());
+        Console.Log("Loaded pay command", Console.types.DEBUG);
         Console.Log("Loaded commands..", Console.types.LOG);
     }
 
