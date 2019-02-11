@@ -35,9 +35,9 @@ public class Reward implements CommandExecutor {
                 }
                 User targetUser = Core.getUser(target.getUniqueId());
                 targetUser.addToBalance(amount);
-                MySQL.logTransaction("SERVER", target.getUniqueId().toString(), amount);
+                MySQL.logTransaction("SERVER", target.getUniqueId().toString(), "REWARD", amount);
                 Chat.sendMessage(p, "Economy", "Successfully rewarded &b" + target.getName() + " &awith &b$" + amount);
-                Chat.sendMessage(p, "Economy", "&b$" + amount + " &ahas been added to your account");
+                Chat.sendMessage(target, "Economy", "&b$" + amount + " &ahas been added to your account");
             }
 
         }

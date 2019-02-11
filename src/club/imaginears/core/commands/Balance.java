@@ -6,6 +6,7 @@ import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.MySQL;
 import club.imaginears.core.utils.Permissions;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,7 +27,20 @@ public class Balance implements CommandExecutor {
                 Chat.sendMessage(p, "Economy", "Your current balance is: &b$" + u.getBalance());
                 MySQL.userSQLGrab(u);
             }
-            if (args.length > 0 || args.length < 0) {
+            if (args.length == 1) {
+                if (Permissions.checkPermission(p, "core.balanceothers")) {
+                    OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
+                    if (MySQL.checkPlayerExistsOffline(target)) {
+                        Chat.sendMessage(p, "Economy", "Their current balance is: &b$" + MySQL.getOfflineBalance(target));
+                    } else {
+                        Chat.sendError(p, Chat.ChatErrors.COMMON, "That player has never logged in to Imaginears");
+                    }
+                } else {
+                    Chat.sendError(p, Chat.ChatErrors.ARGCOUNT, "/balance");
+                }
+
+            }
+            if (args.length > 1 || args.length < 0) {
                 Chat.sendError(p, Chat.ChatErrors.ARGCOUNT, "/balance");
             }
 

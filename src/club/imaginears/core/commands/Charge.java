@@ -45,7 +45,7 @@ public class Charge implements CommandExecutor {
                 targetUser.subtractFromBalance(amount);
                 Chat.sendMessage(p, "Charge", "The user has been charged.");
                 Chat.sendMessage(target, "Charge", "You have been charged &b$" + amount + " &aby &b" + storeName);
-                MySQL.logTransaction(target.getUniqueId().toString(), storeName, amount);
+                MySQL.logTransaction(target.getUniqueId().toString(), storeName, "CHARGE", amount);
             }
 
         }

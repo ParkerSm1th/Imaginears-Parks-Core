@@ -39,9 +39,9 @@ public class Pay implements CommandExecutor {
                 }
                 u.subtractFromBalance(amount);
                 targetUser.addToBalance(amount);
-                MySQL.logTransaction(p.getUniqueId().toString(), target.getUniqueId().toString(), amount);
+                MySQL.logTransaction(p.getUniqueId().toString(), target.getUniqueId().toString(), "PAY", amount);
                 Chat.sendMessage(p, "Economy", "You have paid &b" + target.getName() + "&a, &b$" + amount);
-                Chat.sendMessage(target, "Economy", "You have been given &b$" + amount + " &afrom &b" + target.getName());
+                Chat.sendMessage(target, "Economy", "You have been given &b$" + amount + " &afrom &b" + p.getName());
             }
 
         }

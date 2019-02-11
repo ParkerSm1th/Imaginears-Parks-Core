@@ -48,7 +48,10 @@ commands:
   pay:
   setbalance:
   reward:
+  transactions:
 permissions:
+  core.transactions:
+    description: Permission
   core.reward:
     description: Permission
   core.pay:

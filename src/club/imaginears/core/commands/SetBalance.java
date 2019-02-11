@@ -31,6 +31,7 @@ public class SetBalance implements CommandExecutor {
 
                     if (!MySQL.checkPlayerExistsOffline(offtarget)) {
                         Chat.sendError(p, Chat.ChatErrors.COMMON, "That player has never logged in");
+                        return true;
                     }
 
                     MySQL.setOfflineBalance(offtarget, amount);

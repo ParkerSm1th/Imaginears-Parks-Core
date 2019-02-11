@@ -1,10 +1,15 @@
 package club.imaginears.core.objects;
 
 
+import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.MySQL;
 import club.imaginears.core.utils.Permissions;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.UUID;
 
 public class User {
@@ -76,6 +81,10 @@ public class User {
     public void subtractFromBalance(Float balance) {
         this.balance = this.balance - balance;
         MySQL.subtractFromBalance(this.player, balance);
+    }
+
+    public Transaction getMostRecentTransaction() {
+        return MySQL.getMostRecentTransactions(this.player);
     }
 
     public void setUsername(String username) {

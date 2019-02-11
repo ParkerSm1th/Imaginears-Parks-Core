@@ -1,5 +1,6 @@
 package club.imaginears.core.utils;
 
+import club.imaginears.core.objects.Transaction;
 import club.imaginears.core.objects.User;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -22,6 +23,26 @@ public class MySQL {
     }
 
     public static Float getBalance(Player p) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement sql = connection.prepareStatement("SELECT balance FROM server.economy WHERE uuid=?");
+            sql.setString(1, p.getUniqueId() + "");
+            ResultSet result = sql.executeQuery();
+            if (!result.next()) {
+                result.close();
+                sql.close();
+                return (float) 0.0;
+            }
+            Float balance = result.getFloat("balance");
+            result.close();
+            sql.close();
+            return balance;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return (float) 0.0;
+        }
+    }
+
+    public static Float getOfflineBalance(OfflinePlayer p) {
         try (Connection connection = getConnection()) {
             PreparedStatement sql = connection.prepareStatement("SELECT balance FROM server.economy WHERE uuid=?");
             sql.setString(1, p.getUniqueId() + "");
@@ -135,15 +156,56 @@ public class MySQL {
         }
     }
 
-    public static void logTransaction(String UUID1, String UUID2, Float amount) {
+    public static Transaction getMostRecentTransactions(Player p) {
         try (Connection connection = getConnection()) {
-            PreparedStatement pl = connection.prepareStatement("INSERT INTO server.transactions (from_uuid, to_uuid, amount, time) VALUES (?, ?, ?, ?)");
+            PreparedStatement sql = connection.prepareStatement("SELECT * FROM server.transactions WHERE from_uuid=? OR to_uuid=? ORDER BY id DESC LIMIT 0, 1");
+            sql.setString(1, p.getUniqueId().toString() + "");
+            sql.setString(2, p.getUniqueId().toString() + "");
+            ResultSet result = sql.executeQuery();
+            if (!result.next()) {
+                result.close();
+                sql.close();
+                return new Transaction(Transaction.transactionType.ERROR, "", "", (float) 0.0);
+            }
+            String from_uuid = result.getString("from_uuid");
+            String to_uuid = result.getString("to_uuid");
+            String type = result.getString("type");
+            Float amount = result.getFloat("amount");
+            result.close();
+            sql.close();
+            if (type.equalsIgnoreCase("PAY")) {
+                if (to_uuid.equalsIgnoreCase(p.getUniqueId() + "")) {
+                    return new Transaction(Transaction.transactionType.PAYRECIEVE, p.getUniqueId().toString(), from_uuid, amount);
+                } else {
+                    return new Transaction(Transaction.transactionType.PAYSEND, p.getUniqueId().toString(), to_uuid, amount);
+                }
+            }
+
+            if (type.equalsIgnoreCase("CHARGE")) {
+                return new Transaction(Transaction.transactionType.CHARGE, p.getUniqueId().toString(), to_uuid, amount);
+            }
+
+            if (type.equalsIgnoreCase("REWARD")) {
+                return new Transaction(Transaction.transactionType.REWARD, p.getUniqueId().toString(), "SERVER", amount);
+            }
+            return new Transaction(Transaction.transactionType.ERROR, "", "", (float) 0.0);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void logTransaction(String UUID1, String UUID2, String transType, Float amount) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement pl = connection.prepareStatement("INSERT INTO server.transactions (from_uuid, to_uuid, amount, type, time) VALUES (?, ?, ?, ?, ?)");
             pl.setString(1, UUID1);
             pl.setString(2, UUID2);
             pl.setFloat(3, amount);
+            pl.setString(4, transType);
             Date date = new Date();
             long timeMilli = date.getTime();
-            pl.setString(4, Long.toString(timeMilli));
+            pl.setString(5, Long.toString(timeMilli));
             pl.execute();
             pl.close();
         } catch (SQLException e) {
