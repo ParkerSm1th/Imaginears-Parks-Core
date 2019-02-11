@@ -1,17 +1,17 @@
 package club.imaginears.core;
 
 import club.imaginears.core.commands.*;
+import club.imaginears.core.commands.Build;
 import club.imaginears.core.commands.Warps;
 import club.imaginears.core.commands.WhitelistManager;
-import club.imaginears.core.events.AsyncPlayerChat;
-import club.imaginears.core.events.PlayerCommandPreprocess;
-import club.imaginears.core.events.PlayerJoin;
-import club.imaginears.core.events.PlayerLeave;
+import club.imaginears.core.events.*;
+import club.imaginears.core.objects.Shop;
 import club.imaginears.core.objects.User;
 import club.imaginears.core.utils.*;
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -30,8 +30,11 @@ public class Core extends JavaPlugin {
 
 
     private static Core instance;
-    public static Boolean debug = true;
+    public static Boolean debug = false;
     private static HashMap<UUID, User> users = new HashMap<>();
+    public static HashMap<Location, Shop> enabledShops = new HashMap<>();
+    public static HashMap<Location, Shop> inProgressShops = new HashMap<>();
+    public static HashMap<Player, Shop> playerOnShop = new HashMap<>();
     public File warpsFile;
     public FileConfiguration warps;
 
@@ -40,6 +43,9 @@ public class Core extends JavaPlugin {
 
     public File whitelistFile;
     public FileConfiguration whitelist;
+
+    public File shopsFile;
+    public FileConfiguration shops;
 
     private static club.imaginears.core.Core c;
 
@@ -51,7 +57,7 @@ public class Core extends JavaPlugin {
         createFiles();
         registerCommands();
         registerEvents();
-
+        ShopSigns.loadShops();
         for (Player p : Bukkit.getOnlinePlayers()) {
             Players.joinSetup(p);
         }
@@ -68,9 +74,8 @@ public class Core extends JavaPlugin {
                 InventoryManager.savePlayInventory(pl);
             }
         }
-        instance = null;
-        saveInventories();
         club.imaginears.core.utils.WhitelistManager.saveFile();
+        instance = null;
         Console.Log("Stopping core..", Console.types.LOG);
     }
 
@@ -117,6 +122,8 @@ public class Core extends JavaPlugin {
         Console.Log("Loaded inventories file", Console.types.LOG);
         createWhitelistFile();
         Console.Log("Loaded whitelist file", Console.types.LOG);
+        createShopsFile();
+        Console.Log("Loaded shops file", Console.types.LOG);
     }
 
     public FileConfiguration getWarpsFile() {
@@ -133,6 +140,25 @@ public class Core extends JavaPlugin {
         warps = new YamlConfiguration();
         try {
             warps.load(warpsFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public FileConfiguration getShopsFile() {
+        return this.shops;
+    }
+
+    private void createShopsFile() {
+        shopsFile = new File(getDataFolder(), "shops.yml");
+        if (!shopsFile.exists()) {
+            shopsFile.getParentFile().mkdirs();
+            saveResource("shops.yml", false);
+        }
+
+        shops = new YamlConfiguration();
+        try {
+            shops.load(shopsFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -266,6 +292,8 @@ public class Core extends JavaPlugin {
         pm.registerEvents(new PlayerJoin(), this);
         pm.registerEvents(new PlayerLeave(), this);
         pm.registerEvents(new GUIs(), this);
+        pm.registerEvents(new club.imaginears.core.events.Build(), this);
+        pm.registerEvents(new SpecialSigns(), this);
         pm.registerEvents(new PlayerCommandPreprocess(), this);
         pm.registerEvents(new AsyncPlayerChat(), this);
         pm.registerEvents(new InventoryManager(), this);

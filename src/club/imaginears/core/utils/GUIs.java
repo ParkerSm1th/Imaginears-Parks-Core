@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -186,11 +187,36 @@ public class GUIs implements Listener {
         ArrayList<String> lorelist = lore;
 
         meta.setLore(lorelist);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES,
+                ItemFlag.HIDE_DESTROYS,
+                ItemFlag.HIDE_ENCHANTS,
+                ItemFlag.HIDE_PLACED_ON,
+                ItemFlag.HIDE_POTION_EFFECTS,
+                ItemFlag.HIDE_UNBREAKABLE);
         meta.setLocalizedName(notes);
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
 
         item.setItemMeta(meta);
         inv.setItem(location, item);
+    }
+
+    public static ItemStack getItem(Material type, String name, ArrayList lore, String notes) {
+        ItemStack item = new ItemStack(type);
+        ItemMeta meta = item.getItemMeta();
+        ArrayList<String> lorelist = lore;
+
+        meta.setLore(lorelist);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES,
+                ItemFlag.HIDE_DESTROYS,
+                ItemFlag.HIDE_ENCHANTS,
+                ItemFlag.HIDE_PLACED_ON,
+                ItemFlag.HIDE_POTION_EFFECTS,
+                ItemFlag.HIDE_UNBREAKABLE);
+        meta.setLocalizedName(notes);
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+
+        item.setItemMeta(meta);
+        return item;
     }
 
     public static void openEditUserGUI(Player p, OfflinePlayer target) {

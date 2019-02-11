@@ -20,6 +20,10 @@ public class FileAccess {
         return Core.getInstance().whitelist;
     }
 
+    public static FileConfiguration getShops() {
+        return Core.getInstance().shops;
+    }
+
     public static boolean isSet(FileConfiguration file, String path) {
         return file.isSet(path);
     }

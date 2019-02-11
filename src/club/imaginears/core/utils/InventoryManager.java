@@ -65,6 +65,7 @@ public class InventoryManager implements Listener {
     public void onInteract(PlayerInteractEvent e) {
         Player p = (Player) e.getPlayer();
         if (Build.buildMode.contains(p.getName())) return;
+        if (e.getItem() == null) return;
         String itemname = e.getItem().getItemMeta().getDisplayName().toString().toLowerCase();
         if (e.getItem().getItemMeta().hasLocalizedName()) {
             e.setCancelled(true);
