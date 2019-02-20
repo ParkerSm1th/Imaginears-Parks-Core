@@ -1,5 +1,6 @@
 package club.imaginears.core.commands;
 
+import club.imaginears.core.objects.Rank;
 import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.InventoryManager;
 import club.imaginears.core.utils.Permissions;
@@ -72,6 +73,8 @@ public class Build implements CommandExecutor {
             }
 
         }
+
+
 
         return true;
     }

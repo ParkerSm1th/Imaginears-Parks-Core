@@ -6,6 +6,7 @@ public enum Rank {
     DEVELOPER("Developer", "developer", "&f[&5Developer&f]", "&f", 12),
     MANAGER("Manager", "manager", "&f[&aManager&f]", "&f", 11),
     COORDINATOR("Coordinator", "coordinator", "&f[&cCoordinator&f]", "&f", 10),
+    IMAGINEERS("Imagineers", "imagineers", "&f[&3Cast Member&f]", "&f", 9),
     CASTMEMBER("Castmember", "castmember", "&f[&3Cast Member&f]", "&f", 9),
     CHARACTER("Character", "character", "&f[&6Character&f]", "&6", 8),
     PHOTOPASS("Photopass", "photopass", "&f[&3Photopass&f]", "&f", 7),
@@ -41,6 +42,8 @@ public enum Rank {
                 return MANAGER;
             case "coordinator":
                 return COORDINATOR;
+            case "imagineers":
+                return IMAGINEERS;
             case "castmember":
                 return CASTMEMBER;
             case "character":

@@ -3,7 +3,6 @@ package club.imaginears.core.events;
 import club.imaginears.core.objects.User;
 import club.imaginears.core.utils.Permissions;
 import club.imaginears.core.utils.Players;
-import mc.cyberplex.ChatManager.ChatManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

@@ -1,6 +1,7 @@
 package club.imaginears.core.commands;
 
 import club.imaginears.core.Core;
+import club.imaginears.core.objects.Transaction;
 import club.imaginears.core.objects.User;
 import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.MySQL;
@@ -11,6 +12,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import static club.imaginears.core.objects.Transaction.transactionType.REWARD;
 
 public class Reward implements CommandExecutor {
 
@@ -34,8 +37,9 @@ public class Reward implements CommandExecutor {
                     return true;
                 }
                 User targetUser = Core.getUser(target.getUniqueId());
-                targetUser.addToBalance(amount);
-                MySQL.logTransaction("SERVER", target.getUniqueId().toString(), "REWARD", amount);
+                Transaction trans = new Transaction(REWARD, targetUser.getUniqueId().toString(), null, amount);
+                trans.process();
+                trans.logTransaction();
                 Chat.sendMessage(p, "Economy", "Successfully rewarded &b" + target.getName() + " &awith &b$" + amount);
                 Chat.sendMessage(target, "Economy", "&b$" + amount + " &ahas been added to your account");
             }

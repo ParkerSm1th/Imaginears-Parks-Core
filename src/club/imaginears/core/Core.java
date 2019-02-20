@@ -9,6 +9,7 @@ import club.imaginears.core.objects.Shop;
 import club.imaginears.core.objects.User;
 import club.imaginears.core.utils.*;
 import com.google.common.base.Preconditions;
+import io.socket.client.Socket;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -61,6 +62,8 @@ public class Core extends JavaPlugin {
         for (Player p : Bukkit.getOnlinePlayers()) {
             Players.joinSetup(p);
         }
+
+        club.imaginears.core.utils.Socket.setup();
 
     }
 
@@ -283,6 +286,8 @@ public class Core extends JavaPlugin {
         Console.Log("Loaded reward command", Console.types.DEBUG);
         getCommand("transactions").setExecutor(new Transactions());
         Console.Log("Loaded transactions command", Console.types.DEBUG);
+        getCommand("pin").setExecutor(new Pin());
+        Console.Log("Loaded pin command", Console.types.DEBUG);
         Console.Log("Loaded commands..", Console.types.LOG);
     }
 
@@ -299,4 +304,5 @@ public class Core extends JavaPlugin {
         pm.registerEvents(new InventoryManager(), this);
         Console.Log("Loaded events..", Console.types.LOG);
     }
+
 }

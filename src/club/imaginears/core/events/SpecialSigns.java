@@ -74,9 +74,7 @@ public class SpecialSigns implements Listener {
                     Chest chest = ((Chest) b.getState());
                     ArrayList<ItemStack> tempitems = new ArrayList<ItemStack>();
                     for (int i = 0; i < 27; i++) {
-                        Console.Log("I! " + i, Console.types.DEBUG);
                         if (chest.getInventory().getItem(i) != null) {
-                            Console.Log("Good I! " + i, Console.types.DEBUG);
                             tempitems.add(chest.getInventory().getItem(i));
                         } else {
 
@@ -105,9 +103,14 @@ public class SpecialSigns implements Listener {
                         if (u.getBalance() < shop.getPrice()) {
                             Chat.sendError(p, Chat.ChatErrors.COMMON, "You do not have enough money to make this purchase!");
                         } else {
-                            u.subtractFromBalance(shop.getPrice());
-                            Chat.sendMessage(p, "Charge", "You have been charged &b$" + shop.getPrice() + " &aby &b" + shop.getStore() + " &aand have been given &b" + shop.getName());
-                            MySQL.logTransaction(u.getUniqueId().toString(), shop.getStore(), "CHARGE", shop.getPrice());
+                            if (shop.getPrice() == (float) 0.0) {
+                                Chat.sendMessage(p, "Charge", "You have been given &b" + shop.getName());
+                            } else {
+                                u.subtractFromBalance(shop.getPrice());
+                                Chat.sendMessage(p, "Charge", "You have been charged &b$" + shop.getPrice() + " &aby &b" + shop.getStore() + " &aand have been given &b" + shop.getName());
+                                MySQL.logTransaction(u.getUniqueId().toString(), shop.getStore(), "CHARGE", shop.getPrice());
+                            }
+
                             p.getInventory().addItem(shop.getItems());
                         }
                     }
@@ -131,8 +134,12 @@ public class SpecialSigns implements Listener {
                 String name = e.getLine(1);
                 String store = e.getLine(2);
                 Float price = Float.parseFloat(e.getLine(3));
+                if (price == (float) 0.0) {
+                    e.setLine(3, ChatColor.translateAlternateColorCodes('&', "&aFree"));
+                } else {
+                    e.setLine(3, ChatColor.translateAlternateColorCodes('&', "&a$" + price));
+                }
                 e.setLine(0, ChatColor.translateAlternateColorCodes('&', "&b[Shop]"));
-                e.setLine(3, ChatColor.translateAlternateColorCodes('&', "&a$" + e.getLine(3)));
                 e.setLine(2, ChatColor.translateAlternateColorCodes('&', "&b" + name));
                 e.setLine(1, ChatColor.translateAlternateColorCodes('&', "&9" + store));
                 Console.Log(e.getBlock().getLocation().toString(), Console.types.DEBUG);

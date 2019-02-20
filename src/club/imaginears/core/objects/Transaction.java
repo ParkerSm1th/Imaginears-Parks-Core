@@ -1,5 +1,7 @@
 package club.imaginears.core.objects;
 
+import club.imaginears.core.utils.MySQL;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -36,5 +38,49 @@ public class Transaction {
 
     public Float getAmount() {
         return amount;
+    }
+
+    public void logTransaction() {
+        switch(this.type) {
+            case REWARD:
+                MySQL.logTransaction("SERVER", this.user_uuid, "REWARD", amount);
+                break;
+            case CHARGE:
+                MySQL.logTransaction(this.user_uuid, this.other, "CHARGE", amount);
+                break;
+            case PAYRECIEVE:
+                MySQL.logTransaction(this.other, this.user_uuid, "PAY", amount);
+                break;
+            case PAYSEND:
+                MySQL.logTransaction(this.user_uuid, this.other, "PAY", amount);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void process() {
+        switch(this.type) {
+            case REWARD:
+                MySQL.addToBalance(Bukkit.getPlayer(UUID.fromString(this.user_uuid)), this.amount);
+                logTransaction();
+                break;
+            case CHARGE:
+                MySQL.subtractFromBalance(Bukkit.getPlayer(UUID.fromString(this.user_uuid)), this.amount);
+                logTransaction();
+                break;
+            case PAYRECIEVE:
+                MySQL.subtractFromBalance(Bukkit.getPlayer(UUID.fromString(this.other)), this.amount);
+                MySQL.addToBalance(Bukkit.getPlayer(UUID.fromString(this.user_uuid)), this.amount);
+                logTransaction();
+                break;
+            case PAYSEND:
+                MySQL.addToBalance(Bukkit.getPlayer(UUID.fromString(this.other)), this.amount);
+                MySQL.subtractFromBalance(Bukkit.getPlayer(UUID.fromString(this.user_uuid)), this.amount);
+                logTransaction();
+                break;
+            default:
+                break;
+        }
     }
 }

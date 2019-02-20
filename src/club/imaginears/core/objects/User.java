@@ -83,6 +83,10 @@ public class User {
         MySQL.subtractFromBalance(this.player, balance);
     }
 
+    public String getPin() {
+        return MySQL.getPin(this.player);
+    }
+
     public Transaction getMostRecentTransaction() {
         return MySQL.getMostRecentTransactions(this.player);
     }
@@ -93,6 +97,7 @@ public class User {
 
     public void setRank(Rank rank) {
         this.rank = rank;
+        MySQL.updateRank(this.player, rank);
     }
 
     public long getLoginTime() {

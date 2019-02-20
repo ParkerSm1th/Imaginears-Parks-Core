@@ -1,6 +1,7 @@
 package club.imaginears.core.commands;
 
 import club.imaginears.core.Core;
+import club.imaginears.core.objects.Transaction;
 import club.imaginears.core.objects.User;
 import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.MySQL;
@@ -11,7 +12,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import static club.imaginears.core.objects.Transaction.transactionType.PAYSEND;
+
 public class Pay implements CommandExecutor {
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
@@ -37,9 +41,9 @@ public class Pay implements CommandExecutor {
                     Chat.sendError(p, Chat.ChatErrors.COMMON, "You do not have &b$" + amount + "&c!");
                     return true;
                 }
-                u.subtractFromBalance(amount);
-                targetUser.addToBalance(amount);
-                MySQL.logTransaction(p.getUniqueId().toString(), target.getUniqueId().toString(), "PAY", amount);
+                Transaction trans = new Transaction(PAYSEND, u.getUniqueId().toString(), targetUser.getUniqueId().toString(), amount);
+                trans.process();
+                trans.logTransaction();
                 Chat.sendMessage(p, "Economy", "You have paid &b" + target.getName() + "&a, &b$" + amount);
                 Chat.sendMessage(target, "Economy", "You have been given &b$" + amount + " &afrom &b" + p.getName());
             }

@@ -29,6 +29,9 @@ public class GUIs implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
+        if (e.getClickedInventory().getName() == null) {
+            return;
+        }
         if (e.getClickedInventory().getName().contains("Edit User")) {
             String itemname = e.getCurrentItem().getItemMeta().getDisplayName().toString().toLowerCase();
             OfflinePlayer target = Bukkit.getOfflinePlayer(e.getCurrentItem().getItemMeta().getLocalizedName().toString());

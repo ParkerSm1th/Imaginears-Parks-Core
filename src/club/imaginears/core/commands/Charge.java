@@ -1,6 +1,7 @@
 package club.imaginears.core.commands;
 
 import club.imaginears.core.Core;
+import club.imaginears.core.objects.Transaction;
 import club.imaginears.core.objects.User;
 import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.MySQL;
@@ -11,6 +12,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import static club.imaginears.core.objects.Transaction.transactionType.CHARGE;
 
 public class Charge implements CommandExecutor {
 
@@ -42,10 +45,11 @@ public class Charge implements CommandExecutor {
                     return true;
                 }
 
-                targetUser.subtractFromBalance(amount);
+                Transaction trans = new Transaction(CHARGE, u.getUniqueId().toString(), storeName, amount);
+                trans.process();
+                trans.logTransaction();
                 Chat.sendMessage(p, "Charge", "The user has been charged.");
                 Chat.sendMessage(target, "Charge", "You have been charged &b$" + amount + " &aby &b" + storeName);
-                MySQL.logTransaction(target.getUniqueId().toString(), storeName, "CHARGE", amount);
             }
 
         }

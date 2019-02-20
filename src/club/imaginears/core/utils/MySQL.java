@@ -1,5 +1,7 @@
 package club.imaginears.core.utils;
 
+import club.imaginears.core.Core;
+import club.imaginears.core.objects.Rank;
 import club.imaginears.core.objects.Transaction;
 import club.imaginears.core.objects.User;
 import org.bukkit.Bukkit;
@@ -8,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.sql.*;
 import java.util.Date;
+import java.util.Random;
 
 public class MySQL {
 
@@ -156,6 +159,54 @@ public class MySQL {
         }
     }
 
+    public static String getPin(Player p) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement sql = connection.prepareStatement("DELETE FROM server.panelpins WHERE uuid=?");
+            sql.setString(1, p.getUniqueId().toString() + "");
+            sql.execute();
+            sql.close();
+            char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+            Random rnd = new Random();
+            StringBuilder sb = new StringBuilder((100000 + rnd.nextInt(900000)) + "-");
+            for (int i = 0; i < 5; i++)
+                sb.append(chars[rnd.nextInt(chars.length)]);
+            String pin = sb.toString();
+            PreparedStatement pl = connection.prepareStatement("INSERT INTO server.panelpins (uuid, pin, username, role) VALUES (?,?,?,?)");
+            pl.setString(1, p.getUniqueId().toString());
+            pl.setString(2, pin);
+            pl.setString(3, p.getName());
+            User u = Core.getUser(p.getUniqueId());
+            if (u.getRank().equals(Rank.CASTMEMBER)) {
+                if (p.hasPermission("core.buildmode")) {
+                    pl.setFloat(4, (float) 4.5);
+                } else {
+                    pl.setInt(4, u.getRank().getRankLadder());
+                }
+            } else {
+                pl.setInt(4, u.getRank().getRankLadder());
+            }
+            pl.execute();
+            pl.close();
+            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Core.getInstance(), new Runnable() {
+
+                public void run() {
+                    try (Connection connection = getConnection()) {
+                        PreparedStatement sql3 = connection.prepareStatement("DELETE FROM server.panelpins WHERE uuid=?");
+                        sql3.setString(1, p.getUniqueId().toString());
+                        sql3.execute();
+                        sql3.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 1800L);
+            return pin;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static Transaction getMostRecentTransactions(Player p) {
         try (Connection connection = getConnection()) {
             PreparedStatement sql = connection.prepareStatement("SELECT * FROM server.transactions WHERE from_uuid=? OR to_uuid=? ORDER BY id DESC LIMIT 0, 1");
@@ -233,6 +284,18 @@ public class MySQL {
         }
     }
 
+    public static void updateRank(Player u, Rank rank) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement pl = connection.prepareStatement("UPDATE server.player_data SET rank = ? WHERE uuid = ?");
+            pl.setInt(1, rank.getRankLadder());
+            pl.setString(2, u.getUniqueId().toString());
+            pl.execute();
+            pl.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static Boolean checkPlayerExists(Player p) {
         try (Connection connection = getConnection()) {
             PreparedStatement sql = connection.prepareStatement("SELECT id FROM server.player_data WHERE uuid=?");
@@ -273,6 +336,18 @@ public class MySQL {
         }
     }
 
+    public static void userLogOff(Player p) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement sql2 = connection.prepareStatement("UPDATE server.player_data SET online = 0 WHERE uuid = ?");
+            sql2.setString(1, p.getUniqueId().toString());
+            sql2.execute();
+            sql2.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+
     public static void userSQLGrab(User u) {
         try (Connection connection = getConnection()) {
             PreparedStatement sql = connection.prepareStatement("SELECT * FROM server.economy WHERE uuid=?");
@@ -285,6 +360,10 @@ public class MySQL {
             Float balance = result.getFloat("balance");
             result.close();
             sql.close();
+            PreparedStatement sql2 = connection.prepareStatement("UPDATE server.player_data SET online = 1 WHERE uuid = ?");
+            sql2.setString(1, u.getUniqueId().toString());
+            sql2.execute();
+            sql2.close();
             u.setBalance(balance);
         } catch (SQLException e) {
             e.printStackTrace();

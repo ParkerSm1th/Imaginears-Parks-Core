@@ -2,6 +2,7 @@ package club.imaginears.core.utils;
 
 import club.imaginears.core.objects.Rank;
 import me.lucko.luckperms.LuckPerms;
+import me.lucko.luckperms.api.LuckPermsApi;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -58,6 +59,11 @@ public class Permissions {
             default:
                 return Rank.GUEST;
         }
+    }
+
+    public static boolean checkRank(Player p, Rank rank) {
+        LuckPermsApi api = LuckPerms.getApi();
+        return api.getUser(p.getUniqueId()).inheritsGroup(api.getGroup(rank.actual));
     }
 
     public static Rank getRank(Player p) {
