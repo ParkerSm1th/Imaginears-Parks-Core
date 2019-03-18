@@ -28,7 +28,7 @@ public class PlayerCommandPreprocess implements Listener {
         plugins.add("bukkit:plugins");
 
         List<String> plugins2 = new ArrayList();
-        plugins.add("pl");
+        plugins2.add("pl");
 
         List<String> version = new ArrayList();
         version.add("version");
@@ -36,7 +36,7 @@ public class PlayerCommandPreprocess implements Listener {
         version.add("bukkit:version");
 
         List<String> version2 = new ArrayList();
-        version.add("ver");
+        version2.add("ver");
 
         List<String> about = new ArrayList();
         about.add("about");
@@ -51,6 +51,13 @@ public class PlayerCommandPreprocess implements Listener {
         inv.add("clear");
         inv.add("gamemode");
 
+        List<String> punish = new ArrayList();
+        punish.add("kick");
+        punish.add("ban");
+        punish.add("minecraft:ban");
+        punish.add("minecraft:kick");
+
+
         if (Permissions.checkPermission(p, "core.commandoverride")) {
             for (String Loop : inv) {
                 if (msg[0].equalsIgnoreCase("/" + Loop)) {
@@ -59,12 +66,44 @@ public class PlayerCommandPreprocess implements Listener {
                     Chat.sendMessage(p, "Staff", "Please use build mode /build");
                 }
             }
+
+            for (String Loop : version2) {
+                if (msg[0].equalsIgnoreCase("/" + Loop)) {
+
+                    e.setCancelled(true);
+                    p.sendMessage("This server is running CraftBukkit version\ngit-Spigot-ImaginearsCustom (MC: 1.13.2) (Implementing API version 1.13.2-ImaginearsCustom)");
+                }
+            }
+
+            for (String Loop : plugins2) {
+                if (msg[0].equalsIgnoreCase("/" + Loop)) {
+
+                    e.setCancelled(true);
+                    p.sendMessage(Chat.sendColorFree("&fPlugins (3): &aFaith&f, &aTrust&f, &aand a bit of pixie dust"));
+                }
+            }
+
+            for (String Loop : punish) {
+                if (msg[0].equalsIgnoreCase("/" + Loop)) {
+
+                    e.setCancelled(true);
+                    Chat.sendMessage(p, "Staff", "Please use the security menu /security");
+                }
+            }
         } else {
             for (String Loop : inv) {
                 if (msg[0].equalsIgnoreCase("/" + Loop)) {
 
                     e.setCancelled(true);
                     Chat.sendMessage(p, "Staff", "Please use build mode /build");
+                }
+            }
+
+            for (String Loop : punish) {
+                if (msg[0].equalsIgnoreCase("/" + Loop)) {
+
+                    e.setCancelled(true);
+                    Chat.sendMessage(p, "Staff", "Please use the security menu /security");
                 }
             }
 

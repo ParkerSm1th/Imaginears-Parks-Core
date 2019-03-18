@@ -93,6 +93,7 @@ public class SpecialSigns implements Listener {
             return;
         }
         if (!p.isSneaking()) {
+            if (b == null) return;
             if (b.getType() == Material.SIGN || b.getType() == Material.WALL_SIGN) {
                 Sign sign = (Sign) e.getClickedBlock().getState();
                 if (sign.getLine(0).contains("Shop")) {
@@ -121,6 +122,7 @@ public class SpecialSigns implements Listener {
                 }
             }
         } else {
+
         }
     }
 

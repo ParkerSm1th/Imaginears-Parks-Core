@@ -7,49 +7,134 @@ api-version: 1.13
 load: startup
 commands:
   edituser:
+    usage: /command
+    description:  Command
   fly:
+    usage: /command
+    description:  Command
   vanish:
+    usage: /command
+    description:  Command
     aliases: [v, va]
   vanished:
+    usage: /command
+    description:  Command
     aliases: [vlist, vanishedlist]
   nightvision:
+    usage: /command
+    description:  Command
     aliases: [nv]
   teleport:
+    usage: /command
+    description:  Command
     aliases: [tp, mu, meetup]
   teleporthere:
+    usage: /command
+    description:  Command
     aliases: [tphere, muh, meetuphere]
   setwarp:
+    usage: /command
+    description:  Command
   delwarp:
+    usage: /command
+    description:  Command
   warp:
+    usage: /command
+    description:  Command
   warps:
+    usage: /command
+    description:  Command
   tptoggle:
+    usage: /command
+    description:  Command
     aliases: [mut, meetuptoggle]
   flyspeed:
+    usage: /command
+    description:  Command
     aliases: [flightspeed]
   walkspeed:
+    usage: /command
+    description:  Command
     aliases: [groundspeed]
   build:
+    usage: /command
+    description:  Command
   fixinventory:
+    usage: /command
+    description:  Command
   getuuid:
+    usage: /command
+    description:  Command
   reloadinventories:
+    usage: /command
+    description:  Command
   tpcoord:
+    usage: /command
+    description:  Command
     aliases: [tpc]
   buildoffall:
+    usage: /command
+    description:  Command
   heal:
+    usage: /command
+    description:  Command
   speed:
+    usage: /command
+    description:  Command
   invsee:
+    usage: /command
+    description:  Command
   whitelistmanager:
+    usage: /command
+    description:  Command
     aliases: [wm, wlm, whitelist, wl]
   skull:
+    usage: /command
+    description:  Command
     aliases: [head, gethead, getskull]
   balance:
+    usage: /command
+    description:  Command
     aliases: [bal]
   charge:
+    usage: /command
+    description:  Command
   pay:
+    usage: /command
+    description:  Command
   setbalance:
+    usage: /command
+    description:  Command
   reward:
+    usage: /command
+    description:  Command
   transactions:
+    usage: /command
+    description:  Command
+  pin:
+    usage: /command
+    description:  Command
+  spawn:
+    usage: /command
+    description:  Command
+  kick:
+    usage: /command
+    description:  Command
+  profile:
+    usage: /command
+    description:  Command
+  security:
+    usage: /security
+    description:  Command
 permissions:
+  core.security:
+    description: Permission
+  core.profile:
+    description: Permission
+  core.kick:
+    description: Permission
+  core.pin:
+    description: Permission
   core.transactions:
     description: Permission
   core.reward:

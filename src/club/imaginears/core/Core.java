@@ -9,7 +9,11 @@ import club.imaginears.core.objects.Shop;
 import club.imaginears.core.objects.User;
 import club.imaginears.core.utils.*;
 import com.google.common.base.Preconditions;
-import io.socket.client.Socket;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+import com.neovisionaries.ws.client.*;
+import com.neovisionaries.ws.client.WebSocket;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -19,15 +23,18 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-public class Core extends JavaPlugin {
+import static club.imaginears.core.utils.WebSocket.disconnectSocket;
+import static club.imaginears.core.utils.WebSocket.setupSocket;
+
+public class Core extends JavaPlugin implements PluginMessageListener {
 
 
     private static Core instance;
@@ -63,7 +70,9 @@ public class Core extends JavaPlugin {
             Players.joinSetup(p);
         }
 
-        club.imaginears.core.utils.Socket.setup();
+        setupSocket();
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
 
     }
 
@@ -77,9 +86,23 @@ public class Core extends JavaPlugin {
                 InventoryManager.savePlayInventory(pl);
             }
         }
+        disconnectSocket();
         club.imaginears.core.utils.WhitelistManager.saveFile();
         instance = null;
         Console.Log("Stopping core..", Console.types.LOG);
+    }
+
+    @Override
+    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+        if (!channel.equals("BungeeCord")) {
+            return;
+        }
+        ByteArrayDataInput in = ByteStreams.newDataInput(message);
+        String subchannel = in.readUTF();
+        if (subchannel.equals("test")) {
+            // Use the code sample in the 'Response' sections below to read
+            // the data.
+        }
     }
 
     public static Core getInstance() {
@@ -288,6 +311,14 @@ public class Core extends JavaPlugin {
         Console.Log("Loaded transactions command", Console.types.DEBUG);
         getCommand("pin").setExecutor(new Pin());
         Console.Log("Loaded pin command", Console.types.DEBUG);
+        getCommand("spawn").setExecutor(new Spawn());
+        Console.Log("Loaded spawn command", Console.types.DEBUG);
+        getCommand("kick").setExecutor(new Kick());
+        Console.Log("Loaded kick command", Console.types.DEBUG);
+        getCommand("profile").setExecutor(new Profile());
+        Console.Log("Loaded profile command", Console.types.DEBUG);
+        getCommand("security").setExecutor(new Security());
+        Console.Log("Loaded security command", Console.types.DEBUG);
         Console.Log("Loaded commands..", Console.types.LOG);
     }
 
@@ -303,6 +334,25 @@ public class Core extends JavaPlugin {
         pm.registerEvents(new AsyncPlayerChat(), this);
         pm.registerEvents(new InventoryManager(), this);
         Console.Log("Loaded events..", Console.types.LOG);
+    }
+
+    public void sendMessageToBungee(String topic, String msg) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("Forward");
+        out.writeUTF("ALL");
+        out.writeUTF(topic);
+
+        ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
+        DataOutputStream msgout = new DataOutputStream(msgbytes);
+        try {
+            msgout.writeUTF(msg);
+        } catch (
+                IOException exception){
+            exception.printStackTrace();
+        }
+
+        out.writeShort(msgbytes.toByteArray().length);
+        out.write(msgbytes.toByteArray());
     }
 
 }

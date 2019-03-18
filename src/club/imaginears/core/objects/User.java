@@ -1,15 +1,18 @@
 package club.imaginears.core.objects;
 
 
+import club.imaginears.core.Core;
 import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.MySQL;
 import club.imaginears.core.utils.Permissions;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.UUID;
 
 public class User {
@@ -20,6 +23,9 @@ public class User {
     private String address;
     private String server;
     private Float balance;
+    private boolean banned;
+    private Ban ban;
+    private String firstJoin;
     private long loginTime = System.currentTimeMillis();
 
     public User(Player player, UUID uuid, String username, Rank rank, String address, String server) {
@@ -95,13 +101,36 @@ public class User {
         this.username = username;
     }
 
+    public void setFirstJoin(String firstJoin) {
+        this.firstJoin = firstJoin;
+    }
+
     public void setRank(Rank rank) {
         this.rank = rank;
         MySQL.updateRank(this.player, rank);
     }
 
+    public void setBanned(Boolean ban) {
+        this.banned = ban;
+    }
+
+    public void setBan(Ban ban) {
+        this.ban = ban;
+    }
+
     public long getLoginTime() {
         return loginTime;
+    }
+
+    public void kick(String reason) {
+        new BukkitRunnable()
+        {
+            @Override
+            public void run()
+            {
+                player.kickPlayer(Chat.sendColorFree("&cPUNISHMENT &7» &aYou've been kicked from Imaginears Club!\n\n&cReason: &b" + reason + "\n\n&cDate: &a" + new Date()));
+            }
+        }.runTask(Core.getInstance());
     }
 
 

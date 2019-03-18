@@ -1,5 +1,6 @@
 package club.imaginears.core.utils;
 
+import club.imaginears.core.Core;
 import club.imaginears.core.objects.Rank;
 import club.imaginears.core.objects.User;
 import com.google.common.collect.Lists;
@@ -21,6 +22,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 
 public class GUIs implements Listener {
 
@@ -33,14 +36,13 @@ public class GUIs implements Listener {
             return;
         }
         if (e.getClickedInventory().getName().contains("Edit User")) {
-            String itemname = e.getCurrentItem().getItemMeta().getDisplayName().toString().toLowerCase();
-            OfflinePlayer target = Bukkit.getOfflinePlayer(e.getCurrentItem().getItemMeta().getLocalizedName().toString());
+            String itemname = e.getCurrentItem().getItemMeta().getDisplayName().toLowerCase();
+            OfflinePlayer target = Bukkit.getOfflinePlayer(e.getCurrentItem().getItemMeta().getLocalizedName());
             if (e.getCurrentItem().getItemMeta().hasDisplayName()) {
                 e.setCancelled(true);
             }
             if (itemname.contains("profile")) {
-                Chat.sendMessage(p, "Debug", "open profile" );
-                p.closeInventory();
+                openProfile(p, target);
             }
             if (itemname.contains("rank")) {
                 openRankGUI(p, target);
@@ -76,6 +78,10 @@ public class GUIs implements Listener {
                 e.setCancelled(true);
                 p.closeInventory();
             }
+        }
+
+        if (e.getClickedInventory().getName().contains("- Profile")) {
+            e.setCancelled(true);
         }
 
         if (e.getClickedInventory().getName().contains("- Rank")) {
@@ -182,6 +188,90 @@ public class GUIs implements Listener {
             }
 
         }
+
+        if (e.getClickedInventory().getName().contains("- Security")) {
+            String itemname = e.getCurrentItem().getItemMeta().getDisplayName().toLowerCase();
+            Player target = Bukkit.getPlayer(UUID.fromString(e.getCurrentItem().getItemMeta().getLocalizedName()));
+            User user = Players.getUser(target.getName());
+            if (e.getCurrentItem().getItemMeta().hasDisplayName()) {
+                e.setCancelled(true);
+            }
+
+            if (itemname.contains("warn")) {
+                openWarn(p, target);
+            }
+
+            if (itemname.contains("mute")) {
+                openMute(p, target);
+            }
+
+            if (itemname.contains("kick")) {
+                openKick(p, target);
+            }
+
+            if (itemname.contains("ban")) {
+                openBan(p, target);
+            }
+
+        }
+
+        if (e.getClickedInventory().getName().contains("- Warn")) {
+            String itemname = e.getCurrentItem().getItemMeta().getDisplayName().toLowerCase();
+            Player target = Bukkit.getPlayer(UUID.fromString(e.getCurrentItem().getItemMeta().getLocalizedName()));
+            User user = Players.getUser(target.getName());
+            if (e.getCurrentItem().getItemMeta().hasDisplayName()) {
+                e.setCancelled(true);
+            }
+            if (itemname.contains("back")) {
+                openSecurity(p, target);
+            }
+            if (itemname.contains("reason")) {
+                final AnvilGUI anvilGUI = new AnvilGUI(Core.getInstance(), p, "§aEnter Warn Reason", (player2, reply) -> {
+                    openConfirmWarn(p, target, reply);
+                    return null;
+                });
+            }
+
+        }
+
+        if (e.getClickedInventory().getName().contains("- Mute")) {
+            String itemname = e.getCurrentItem().getItemMeta().getDisplayName().toLowerCase();
+            Player target = Bukkit.getPlayer(UUID.fromString(e.getCurrentItem().getItemMeta().getLocalizedName()));
+            User user = Players.getUser(target.getName());
+            if (e.getCurrentItem().getItemMeta().hasDisplayName()) {
+                e.setCancelled(true);
+            }
+            if (itemname.contains("back")) {
+                openSecurity(p, target);
+            }
+
+        }
+
+        if (e.getClickedInventory().getName().contains("- Kick")) {
+            String itemname = e.getCurrentItem().getItemMeta().getDisplayName().toLowerCase();
+            Player target = Bukkit.getPlayer(UUID.fromString(e.getCurrentItem().getItemMeta().getLocalizedName()));
+            User user = Players.getUser(target.getName());
+            if (e.getCurrentItem().getItemMeta().hasDisplayName()) {
+                e.setCancelled(true);
+            }
+            if (itemname.contains("back")) {
+                openSecurity(p, target);
+            }
+
+        }
+
+        if (e.getClickedInventory().getName().contains("- Ban")) {
+            String itemname = e.getCurrentItem().getItemMeta().getDisplayName().toLowerCase();
+            Player target = Bukkit.getPlayer(UUID.fromString(e.getCurrentItem().getItemMeta().getLocalizedName()));
+            User user = Players.getUser(target.getName());
+            if (e.getCurrentItem().getItemMeta().hasDisplayName()) {
+                e.setCancelled(true);
+            }
+            if (itemname.contains("back")) {
+                openSecurity(p, target);
+            }
+
+        }
     }
 
     public static void addItem(Inventory inv, Material type, String name, ArrayList lore, String notes, Integer location) {
@@ -236,6 +326,7 @@ public class GUIs implements Listener {
 
         sm.setLore(profilelore);
         sm.setDisplayName("§b§l" + target.getName().toString() + "§a§l's Profile");
+        sm.setLocalizedName(target.getName().toString());
 
         profile.setItemMeta(sm);
         editUser.setItem(4, profile);
@@ -292,6 +383,7 @@ public class GUIs implements Listener {
 
         sm.setLore(profilelore);
         sm.setDisplayName("§aChanging §b§l" + target.getName().toString() + "§a's rank");
+        sm.setLocalizedName(target.getName().toString());
 
         profile.setItemMeta(sm);
         editUser.setItem(4, profile);
@@ -328,6 +420,266 @@ public class GUIs implements Listener {
 
 
         p.openInventory(editUser);
+    }
+
+    public static void openProfile(Player p, OfflinePlayer target) {
+        currentGUI = "profile";
+        Inventory userProfile = Bukkit.getServer().createInventory(p, 18, "§b" + target.getName().toString() + "§0 - Profile");
+
+        ItemStack profile = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta sm = (SkullMeta) profile.getItemMeta();
+        sm.setOwner(target.getName().toString());
+        String prefix = null;
+        try {
+            prefix = ChatColor.translateAlternateColorCodes('&', Permissions.getRankUUIDDatabase(target.getUniqueId().toString()).getPrefix());
+        } catch(NullPointerException ex) {
+            prefix = ChatColor.translateAlternateColorCodes('&', "&f[&eGuest&f]");
+        }
+
+        sm.setDisplayName("§b§l" + target.getName().toString() + "§a's Profile");
+
+        sm.setLocalizedName(target.getUniqueId().toString());
+        profile.setItemMeta(sm);
+        userProfile.setItem(4, profile);
+
+        addItem(userProfile, Material.GOLD_INGOT, "&bBalance", Lists.newArrayList(" ", "§a$" + MySQL.getOfflineBalance(target)), target.getUniqueId().toString(), 11);
+
+        addItem(userProfile, Material.ANVIL, "&bRank", Lists.newArrayList(" ", Chat.sendColorFree(Permissions.getRankUUIDDatabase(target.getUniqueId().toString()).getPrefix())), target.getUniqueId().toString(), 12);
+
+        if (Bukkit.getPlayer(target.getUniqueId()) != null) {
+            addItem(userProfile, Material.REDSTONE_TORCH, "&bStatus", Lists.newArrayList(" ", "§aOnline"), target.getName().toString(), 13);
+        } else {
+            addItem(userProfile, Material.LEVER, "&bStatus", Lists.newArrayList( " ", "§7Offline"), target.getName().toString(), 13);
+        }
+
+        String firstJoin = CalendarUtils.ConvertMilliSecondsToFormattedDate(MySQL.getPlayerDataUUID(target.getUniqueId().toString(), "first_join"));
+
+        addItem(userProfile, Material.SLIME_BALL, "&bFirst Join", Lists.newArrayList(" ", "§a" + firstJoin), target.getName().toString(), 14);
+
+        addItem(userProfile, Material.LEGACY_REDSTONE_COMPARATOR, "&bFriend Count", Lists.newArrayList(" ", "§a500"), target.getName().toString(), 15);
+
+
+
+
+        p.openInventory(userProfile);
+    }
+
+    public static void openSecurity(Player p, Player target) {
+        currentGUI = "security";
+        Inventory userSecurity = Bukkit.getServer().createInventory(p, 18, "§b" + target.getName().toString() + "§0 - Security");
+
+        ItemStack profile = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta sm = (SkullMeta) profile.getItemMeta();
+        sm.setOwner(target.getName().toString());
+        String prefix = null;
+        try {
+            prefix = ChatColor.translateAlternateColorCodes('&', Permissions.getRankUUIDDatabase(target.getUniqueId().toString()).getPrefix());
+        } catch(NullPointerException ex) {
+            prefix = ChatColor.translateAlternateColorCodes('&', "&f[&eGuest&f]");
+        }
+
+        sm.setDisplayName("§b§l" + target.getName().toString());
+        sm.setLore(Lists.newArrayList(" ", "" + prefix));
+
+        sm.setLocalizedName(target.getUniqueId().toString());
+        profile.setItemMeta(sm);
+        userSecurity.setItem(4, profile);
+
+        addItem(userSecurity, Material.SIGN, "&bWarn", Lists.newArrayList(" ", "§aOpen warn user menu"), target.getUniqueId().toString(), 10);
+
+        addItem(userSecurity, Material.HOPPER, "&bKick", Lists.newArrayList(" ", "§aOpen kick user menu"), target.getUniqueId().toString(), 12);
+
+        addItem(userSecurity, Material.JUKEBOX, "&bMute", Lists.newArrayList(" ", "§aOpen mute user menu"), target.getUniqueId().toString(), 14);
+
+        addItem(userSecurity, Material.BARRIER, "&bBan", Lists.newArrayList(" ", "§aOpen ban user menu"), target.getUniqueId().toString(), 16);
+
+
+
+
+
+        p.openInventory(userSecurity);
+    }
+
+    public static void openWarn(Player p, Player target) {
+        currentGUI = "warn";
+        Inventory userSecurityWarn = Bukkit.getServer().createInventory(p, 18, "§b" + target.getName().toString() + "§0 - Warn");
+
+        ItemStack profile = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta sm = (SkullMeta) profile.getItemMeta();
+        sm.setOwner(target.getName().toString());
+        String prefix = null;
+        try {
+            prefix = ChatColor.translateAlternateColorCodes('&', Permissions.getRankUUIDDatabase(target.getUniqueId().toString()).getPrefix());
+        } catch(NullPointerException ex) {
+            prefix = ChatColor.translateAlternateColorCodes('&', "&f[&eGuest&f]");
+        }
+
+        sm.setDisplayName("§b§l" + target.getName().toString());
+        sm.setLore(Lists.newArrayList(" ", "" + prefix));
+
+        sm.setLocalizedName(target.getUniqueId().toString());
+        profile.setItemMeta(sm);
+        userSecurityWarn.setItem(4, profile);
+
+        addItem(userSecurityWarn, Material.WRITABLE_BOOK, "&b&lEnter Reason", Lists.newArrayList(" ", "§aEnter a warn reason"), target.getUniqueId().toString(), 13);
+
+        addItem(userSecurityWarn, Material.BARRIER, "&c&lBack", Lists.newArrayList(" ", "§cGo back to user security menu", " "), target.getUniqueId().toString(), 9);
+
+
+
+
+
+        p.openInventory(userSecurityWarn);
+    }
+
+    public static void openConfirmWarn(Player p, Player target, String reason) {
+        currentGUI = "warnConfirm";
+        Inventory userSecurityWarn = Bukkit.getServer().createInventory(p, 18, "§b" + target.getName().toString() + "§0 - Confirm Warn");
+
+        ItemStack profile = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta sm = (SkullMeta) profile.getItemMeta();
+        sm.setOwner(target.getName().toString());
+        String prefix = null;
+        try {
+            prefix = ChatColor.translateAlternateColorCodes('&', Permissions.getRankUUIDDatabase(target.getUniqueId().toString()).getPrefix());
+        } catch(NullPointerException ex) {
+            prefix = ChatColor.translateAlternateColorCodes('&', "&f[&eGuest&f]");
+        }
+
+        sm.setDisplayName("§b§l" + target.getName().toString());
+        sm.setLore(Lists.newArrayList(" ", "" + prefix));
+
+        sm.setLocalizedName(target.getUniqueId().toString());
+        profile.setItemMeta(sm);
+        userSecurityWarn.setItem(4, profile);
+
+        addItem(userSecurityWarn, Material.GREEN_WOOL, "&a&lYes, Warn", Lists.newArrayList(" ", "§aWarns the player"), target.getUniqueId().toString(), 11);
+        addItem(userSecurityWarn, Material.BOOK, "&b&lAre you sure?", Lists.newArrayList(" ", "§bWarn Reason: §a" + reason), target.getUniqueId().toString(), 13);
+        addItem(userSecurityWarn, Material.REDSTONE_BLOCK, "&c&lNo, Cancel", Lists.newArrayList(" ", "§cCancel the punishment"), target.getUniqueId().toString(), 15);
+
+        addItem(userSecurityWarn, Material.BARRIER, "&c&lBack", Lists.newArrayList(" ", "§cGo back to reason menu", " "), target.getUniqueId().toString(), 9);
+
+
+
+
+
+        p.openInventory(userSecurityWarn);
+    }
+
+    public static void openKick(Player p, Player target) {
+        currentGUI = "kick";
+        Inventory userSecurityWarn = Bukkit.getServer().createInventory(p, 18, "§b" + target.getName().toString() + "§0 - Kick");
+
+        ItemStack profile = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta sm = (SkullMeta) profile.getItemMeta();
+        sm.setOwner(target.getName().toString());
+        String prefix = null;
+        try {
+            prefix = ChatColor.translateAlternateColorCodes('&', Permissions.getRankUUIDDatabase(target.getUniqueId().toString()).getPrefix());
+        } catch(NullPointerException ex) {
+            prefix = ChatColor.translateAlternateColorCodes('&', "&f[&eGuest&f]");
+        }
+
+        sm.setDisplayName("§b§l" + target.getName().toString());
+        sm.setLore(Lists.newArrayList(" ", "" + prefix));
+
+        sm.setLocalizedName(target.getUniqueId().toString());
+        profile.setItemMeta(sm);
+        userSecurityWarn.setItem(4, profile);
+
+        addItem(userSecurityWarn, Material.WRITABLE_BOOK, "&b&lEnter Reason", Lists.newArrayList(" ", "§aEnter a kick reason", " ", "§e§lPlease warn before kicking!"), target.getUniqueId().toString(), 13);
+
+        addItem(userSecurityWarn, Material.BARRIER, "&c&lBack", Lists.newArrayList(" ", "§cGo back to user security menu", ""), target.getUniqueId().toString(), 9);
+
+
+
+
+
+        p.openInventory(userSecurityWarn);
+    }
+
+    public static void openMute(Player p, Player target) {
+        currentGUI = "mute";
+        Inventory userSecurityWarn = Bukkit.getServer().createInventory(p, 27, "§b" + target.getName().toString() + "§0 - Mute");
+
+        ItemStack profile = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta sm = (SkullMeta) profile.getItemMeta();
+        sm.setOwner(target.getName().toString());
+        String prefix = null;
+        try {
+            prefix = ChatColor.translateAlternateColorCodes('&', Permissions.getRankUUIDDatabase(target.getUniqueId().toString()).getPrefix());
+        } catch(NullPointerException ex) {
+            prefix = ChatColor.translateAlternateColorCodes('&', "&f[&eGuest&f]");
+        }
+
+        sm.setDisplayName("§b§l" + target.getName().toString());
+        sm.setLore(Lists.newArrayList(" ", "" + prefix));
+
+        sm.setLocalizedName(target.getUniqueId().toString());
+        profile.setItemMeta(sm);
+        userSecurityWarn.setItem(4, profile);
+
+        addItem(userSecurityWarn, Material.PAPER, "&b&lChat Offences", Lists.newArrayList(" ", "§aVarious chat offences"), target.getUniqueId().toString(), 11);
+        addItem(userSecurityWarn, Material.CACTUS_GREEN, "&a7 day temp mute", Lists.newArrayList(" ", "§a- §bSharing personal information", "§a- §bRole playing", "§e§lOr: after second warning"), target.getUniqueId().toString(), 12);
+        addItem(userSecurityWarn, Material.DANDELION_YELLOW, "&630 day temp mute", Lists.newArrayList(" ", "§a- §bSwearing in chat", "§a- §bAdvertising", "§e§lOr: after 7 day temp mute"), target.getUniqueId().toString(), 13);
+        addItem(userSecurityWarn, Material.ROSE_RED, "&cPerm mute", Lists.newArrayList(" ", "§a- §bRacial Slurs", "§a- §bOver the top inappropriate chat", "§e§lOr: after all temp mutes"), target.getUniqueId().toString(), 14);
+        addItem(userSecurityWarn, Material.CLOCK, "&c&lTime Mute", Lists.newArrayList(" ", "§e§lEnter the amount of time to mute a user"), target.getUniqueId().toString(), 16);
+        addItem(userSecurityWarn, Material.REDSTONE_BLOCK, "&c&lPerm mute", Lists.newArrayList(" ", "§e§lOffense requires immediate perm mute"), target.getUniqueId().toString(), 17);
+
+        addItem(userSecurityWarn, Material.BARRIER, "&c&lBack", Lists.newArrayList(" ", "§cGo back to user security menu", " "), target.getUniqueId().toString(), 18);
+
+
+
+
+
+        p.openInventory(userSecurityWarn);
+    }
+
+    public static void openBan(Player p, Player target) {
+        currentGUI = "ban";
+        Inventory userSecurityWarn = Bukkit.getServer().createInventory(p, 54, "§b" + target.getName().toString() + "§0 - Ban");
+
+        ItemStack profile = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta sm = (SkullMeta) profile.getItemMeta();
+        sm.setOwner(target.getName().toString());
+        String prefix = null;
+        try {
+            prefix = ChatColor.translateAlternateColorCodes('&', Permissions.getRankUUIDDatabase(target.getUniqueId().toString()).getPrefix());
+        } catch(NullPointerException ex) {
+            prefix = ChatColor.translateAlternateColorCodes('&', "&f[&eGuest&f]");
+        }
+
+        sm.setDisplayName("§b§l" + target.getName().toString());
+        sm.setLore(Lists.newArrayList(" ", "" + prefix));
+
+        sm.setLocalizedName(target.getUniqueId().toString());
+        profile.setItemMeta(sm);
+        userSecurityWarn.setItem(4, profile);
+
+        addItem(userSecurityWarn, Material.PAPER, "&b&lChat Offences", Lists.newArrayList(" ", "§aVarious chat offences"), target.getUniqueId().toString(), 11);
+        addItem(userSecurityWarn, Material.CACTUS_GREEN, "&a7 day temp ban", Lists.newArrayList(" ", "§a- §bSharing personal information", "§a- §bRole playing", "§e§lOr: after perm mute"), target.getUniqueId().toString(), 20);
+        addItem(userSecurityWarn, Material.DANDELION_YELLOW, "&630 day temp ban", Lists.newArrayList(" ", "§a- §bSwearing in chat", "§a- §bAdvertising", "§e§lOr: after perm mute and 7 day temp ban"), target.getUniqueId().toString(), 29);
+        addItem(userSecurityWarn, Material.ROSE_RED, "&cPerm Ban", Lists.newArrayList(" ", "§a- §bRacial Slurs", "§a- §bOver the top inappropriate chat", "§e§lOr: after perm mute and all temp bans"), target.getUniqueId().toString(), 38);
+
+        addItem(userSecurityWarn, Material.DIAMOND_PICKAXE, "&b&lGame Modifications", Lists.newArrayList(" ", "§aVarious game modifications"), target.getUniqueId().toString(), 13);
+        addItem(userSecurityWarn, Material.CACTUS_GREEN, "&a7 day temp ban", Lists.newArrayList(" ", "§a- §bFly Hacks", "§a- §bX-Ray", "§e§lOr: after second kick"), target.getUniqueId().toString(), 22);
+        addItem(userSecurityWarn, Material.DANDELION_YELLOW, "&630 day temp ban", Lists.newArrayList(" ", "§a- §bFreecam", "§a- §bSpam bots", "§e§lOr: after second kick and 7 day temp ban"), target.getUniqueId().toString(), 31);
+        addItem(userSecurityWarn, Material.ROSE_RED, "&cPerm Ban", Lists.newArrayList(" ", "§a- §bDDOS'ing", "§a- §bUUID Spoofing", "§e§lOr: after second kick and all temp bans"), target.getUniqueId().toString(), 40);
+
+        addItem(userSecurityWarn, Material.BARRIER, "&b&lGeneral Rules", Lists.newArrayList(" ", "§aVarious general rules"), target.getUniqueId().toString(), 15);
+        addItem(userSecurityWarn, Material.CACTUS_GREEN, "&a7 day temp ban", Lists.newArrayList(" ", "§a- §bWorld Downloading", "§a- §bLeaking private information", "§e§lOr: after second kick"), target.getUniqueId().toString(), 24);
+        addItem(userSecurityWarn, Material.DANDELION_YELLOW, "&630 day temp ban", Lists.newArrayList(" ", "§a- §bBan Envading", "§a- §bSpam accounts", "§e§lOr: after second kick and 7 day temp ban"), target.getUniqueId().toString(), 33);
+        addItem(userSecurityWarn, Material.ROSE_RED, "&cPerm ban", Lists.newArrayList(" ", "§a- §bAbusing exploits" , "§e§lOr: after second kick and all bans"), target.getUniqueId().toString(), 42);
+
+        addItem(userSecurityWarn, Material.REDSTONE_BLOCK, "&c&lPerm ban", Lists.newArrayList(" ", "§e§lOffense requires immediate perm ban"), target.getUniqueId().toString(), 35);
+
+        addItem(userSecurityWarn, Material.BARRIER, "&c&lBack", Lists.newArrayList(" ", "§cGo back to user security menu", " "), target.getUniqueId().toString(), 45);
+
+
+
+
+
+        p.openInventory(userSecurityWarn);
     }
 
 }

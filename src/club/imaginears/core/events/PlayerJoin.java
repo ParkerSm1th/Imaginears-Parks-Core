@@ -3,6 +3,7 @@ package club.imaginears.core.events;
 import club.imaginears.core.Core;
 import club.imaginears.core.commands.Build;
 import club.imaginears.core.commands.Vanish;
+import club.imaginears.core.objects.Ban;
 import club.imaginears.core.utils.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -16,12 +17,24 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 public class PlayerJoin implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(AsyncPlayerPreLoginEvent event) {
+
+        if (MySQL.checkPlayerBanned(event.getUniqueId().toString())) {
+            Ban ban = MySQL.getBan(event.getUniqueId().toString());
+            /*Date date = new Date(ban.getTime());*/
+            String length = ban.getLength();
+            if (ban.getLength().equals("0")) {
+                length = "Permanent";
+            }
+            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Chat.sendColorFree("\n&cPUNISHMENT &7» &aYou are currently banned from Imaginears Club!\n\n&cReason: &b" + ban.getReason() + "\n&cLength: &b" + length + "\n&cDate Banned: &b" + CalendarUtils.ConvertMilliSecondsToFormattedDate(ban.getTime()) + "\n\n&aTo appeal visit: https://imaginears.club/hub/appeal\n\n&cPunishment ID: &b" + ban.getPid()));
+        }
 
         if (WhitelistManager.checkStatus()) {
             if (!WhitelistManager.checkPlayer(event.getUniqueId().toString())) {

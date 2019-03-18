@@ -132,6 +132,41 @@ public class Permissions {
         }
     }
 
+    public static Rank getRankUUIDDatabase(String uuid) {
+        String rankString = MySQL.getPlayerDataUUID(uuid, "rank");
+        Integer rank = Integer.parseInt(rankString);
+        switch (rank) {
+            case 0:
+                return Rank.GUEST;
+            case 1:
+                return Rank.SILVER;
+            case 2:
+                return Rank.GOLD;
+            case 3:
+                return Rank.PLATINUM;
+            case 4:
+                return Rank.PLATINUMPLUS;
+            case 5:
+                return Rank.SPECIALGUEST;
+            case 6:
+                return Rank.SECURITY;
+            case 7:
+                return Rank.PHOTOPASS;
+            case 8:
+                return Rank.CHARACTER;
+            case 9:
+                return Rank.CASTMEMBER;
+            case 10:
+                return Rank.COORDINATOR;
+            case 11:
+                return Rank.MANAGER;
+            case 12:
+                return Rank.DEVELOPER;
+            default:
+                return Rank.GUEST;
+        }
+    }
+
     public static Rank getOfflineRank(OfflinePlayer p) {
         String group = LuckPerms.getApi().getUser(p.getUniqueId()).getPrimaryGroup();
         if (group.equalsIgnoreCase("default")) {
@@ -164,6 +199,7 @@ public class Permissions {
             return Rank.GUEST;
         }
     }
+
 
 
 }

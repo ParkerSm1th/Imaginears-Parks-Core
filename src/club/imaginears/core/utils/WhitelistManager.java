@@ -122,7 +122,7 @@ public class WhitelistManager {
                     if (Permissions.getRankUUID(uuid).rankLadder >= getRank()) {
                         return true;
                     } else {
-                        return true;
+                        return false;
                     }
                 } else {
                     return false;

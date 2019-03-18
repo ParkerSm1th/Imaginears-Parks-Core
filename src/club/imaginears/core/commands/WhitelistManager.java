@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class WhitelistManager implements CommandExecutor {
 
@@ -36,12 +37,12 @@ public class WhitelistManager implements CommandExecutor {
                         List<String> players = new ArrayList<>();
                         Console.Log(club.imaginears.core.utils.WhitelistManager.getPlayers() + " ", Console.types.DEBUG);
                         for (String uuid : club.imaginears.core.utils.WhitelistManager.getPlayers()) {
-                            players.add(Bukkit.getOfflinePlayer(uuid).getName());
+                            players.add(Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName());
                         }
                         if (club.imaginears.core.utils.WhitelistManager.checkPlayers()) {
-                            p.sendMessage(Chat.sendColorFree("&aPlayers: &b") + String.join("&a, &b", players));
+                            p.sendMessage(Chat.sendColorFree("&aPlayers: &b" + String.join("&a, &b", players)));
                         } else {
-                            p.sendMessage(Chat.sendColorFree("&cPlayers: &b") + String.join("&c, &b", players));
+                            p.sendMessage(Chat.sendColorFree("&cPlayers: &b" + String.join("&c, &b", players)));
                         }
                     } else {
                         Chat.sendMessage(p, "Whitelist", "&cThe whitelist is currently off.");

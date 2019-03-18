@@ -1,9 +1,7 @@
 package club.imaginears.core.utils;
 
 import club.imaginears.core.Core;
-import club.imaginears.core.objects.Rank;
-import club.imaginears.core.objects.Transaction;
-import club.imaginears.core.objects.User;
+import club.imaginears.core.objects.*;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -284,6 +282,26 @@ public class MySQL {
         }
     }
 
+    public static String getPlayerDataUUID(String uuid, String val) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement sql = connection.prepareStatement("SELECT * FROM server.player_data WHERE uuid=?");
+            sql.setString(1, uuid);
+            ResultSet result = sql.executeQuery();
+            if (!result.next()) {
+                result.close();
+                sql.close();
+                return null;
+            }
+            String item = result.getString(val);
+            result.close();
+            sql.close();
+            return item;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void updateRank(Player u, Rank rank) {
         try (Connection connection = getConnection()) {
             PreparedStatement pl = connection.prepareStatement("UPDATE server.player_data SET rank = ? WHERE uuid = ?");
@@ -336,12 +354,49 @@ public class MySQL {
         }
     }
 
+    public static Boolean checkPlayerBanned(String uuid) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement sql = connection.prepareStatement("SELECT id FROM server.bans WHERE uuid=? AND active = 1");
+            sql.setString(1, uuid);
+            ResultSet result = sql.executeQuery();
+            if (!result.next()) {
+                result.close();
+                sql.close();
+                return false;
+            }
+            String item = result.getString("id");
+            result.close();
+            sql.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static void userLogOff(Player p) {
         try (Connection connection = getConnection()) {
-            PreparedStatement sql2 = connection.prepareStatement("UPDATE server.player_data SET online = 0 WHERE uuid = ?");
-            sql2.setString(1, p.getUniqueId().toString());
-            sql2.execute();
-            sql2.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    public static void logKick(Kick kick) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement sql = connection.prepareStatement("INSERT INTO server.punishment_log (uuid, username, type, reason, length, op, time, punishid, active) VALUES (?,?,?,?,?,?,?,?,?)");
+            sql.setString(1, kick.getUser().getUniqueId().toString());
+            sql.setString(2, kick.getUser().getName());
+            sql.setString(3, "KICK");
+            sql.setString(4, kick.getReason());
+            sql.setString(5, "0");
+            sql.setString(6, kick.getOp().getUniqueId().toString());
+            sql.setString(7, kick.getTime());
+            sql.setString(8, kick.getPid());
+            sql.setString(9, "1");
+            sql.execute();
+            sql.close();
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -359,15 +414,62 @@ public class MySQL {
             }
             Float balance = result.getFloat("balance");
             result.close();
-            sql.close();
-            PreparedStatement sql2 = connection.prepareStatement("UPDATE server.player_data SET online = 1 WHERE uuid = ?");
+            PreparedStatement sql3 = connection.prepareStatement("SELECT * FROM server.player_data WHERE uuid=?");
+            sql3.setString(1, u.getUniqueId() + "");
+            ResultSet result3 = sql3.executeQuery();
+            if (!result3.next()) {
+                result3.close();
+                sql3.close();
+            }
+            u.setFirstJoin(result3.getString("first_join"));
+            result3.close();
+            PreparedStatement sql2 = connection.prepareStatement("UPDATE server.player_data SET last_server = 'wdw' WHERE uuid = ?");
             sql2.setString(1, u.getUniqueId().toString());
             sql2.execute();
-            sql2.close();
             u.setBalance(balance);
+            if (checkPlayerBanned(u.getUniqueId().toString())) {
+                PreparedStatement ban = connection.prepareStatement("SELECT * FROM server.bans WHERE uuid=? AND active = 1");
+                ban.setString(1, u.getUniqueId() + "");
+                ResultSet banresult = ban.executeQuery();
+                if (!banresult.next()) {
+                    banresult.close();
+                    sql.close();
+                }
+                u.setBanned(true);
+                Ban userBan = new Ban(u.getUniqueId().toString(), u.getName(), banresult.getString("reason"), banresult.getString("length"), banresult.getString("time"), banresult.getString("op"), banresult.getString("punishid"));
+                u.setBan(userBan);
+                banresult.close();
+                ban.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
 
+        }
+    }
+
+    public static Ban getBan(String uuid) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement ban = connection.prepareStatement("SELECT * FROM server.bans WHERE uuid=? AND active = 1");
+            ban.setString(1, uuid);
+            ResultSet result = ban.executeQuery();
+            if (!result.next()) {
+                result.close();
+                ban.close();
+                return null;
+            }
+            String username = result.getString("username");
+            String reason = result.getString("reason");
+            String length = result.getString("length");
+            String time = result.getString("time");
+            String op = result.getString("op");
+            String punishid = result.getString("punishid");
+            Ban userBan = new Ban(uuid, username, reason, length, time, op, punishid);
+            result.close();
+            ban.close();
+            return userBan;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
