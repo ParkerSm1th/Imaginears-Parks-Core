@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="ImaginearsCore:jar">
+    <output-path>$PROJECT_DIR$/../../../Outputs</output-path>
+    <root id="archive" name="ImaginearsCore.jar">
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/java/plugin.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/java/shops.yml" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="ImaginearsCore" />
+      <element id="module-source" name="ImaginearsCore" />
+      <element id="library" level="project" name="javax.websocket:javax.websocket-api:1.1" />
+    </root>
+  </artifact>
+</component>
