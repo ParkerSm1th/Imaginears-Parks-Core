@@ -9,7 +9,7 @@
       </element>
       <element id="module-output" name="ImaginearsCore" />
       <element id="module-source" name="ImaginearsCore" />
-      <element id="library" level="project" name="javax.websocket:javax.websocket-api:1.1" />
+      <element id="library" level="project" name="Java-WebSocket-1.4.0-with-dependencies" />
     </root>
   </artifact>
 </component>

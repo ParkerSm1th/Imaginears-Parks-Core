@@ -1,0 +1,244 @@
+name: ImaginearsCore
+author: Gatario
+main: club.imaginears.core.Core
+version: [0.1-BETA]
+description: Created for ImaginearsClub
+api-version: 1.13
+load: startup
+commands:
+  edituser:
+    usage: /command
+    description:  Command
+  fly:
+    usage: /command
+    description:  Command
+  vanish:
+    usage: /command
+    description:  Command
+    aliases: [v, va]
+  vanished:
+    usage: /command
+    description:  Command
+    aliases: [vlist, vanishedlist]
+  nightvision:
+    usage: /command
+    description:  Command
+    aliases: [nv]
+  teleport:
+    usage: /command
+    description:  Command
+    aliases: [tp, mu, meetup]
+  teleporthere:
+    usage: /command
+    description:  Command
+    aliases: [tphere, muh, meetuphere]
+  setwarp:
+    usage: /command
+    description:  Command
+  delwarp:
+    usage: /command
+    description:  Command
+  warp:
+    usage: /command
+    description:  Command
+  warps:
+    usage: /command
+    description:  Command
+  tptoggle:
+    usage: /command
+    description:  Command
+    aliases: [mut, meetuptoggle]
+  flyspeed:
+    usage: /command
+    description:  Command
+    aliases: [flightspeed]
+  walkspeed:
+    usage: /command
+    description:  Command
+    aliases: [groundspeed]
+  build:
+    usage: /command
+    description:  Command
+  fixinventory:
+    usage: /command
+    description:  Command
+  getuuid:
+    usage: /command
+    description:  Command
+  reloadinventories:
+    usage: /command
+    description:  Command
+  tpcoord:
+    usage: /command
+    description:  Command
+    aliases: [tpc]
+  buildoffall:
+    usage: /command
+    description:  Command
+  heal:
+    usage: /command
+    description:  Command
+  speed:
+    usage: /command
+    description:  Command
+  invsee:
+    usage: /command
+    description:  Command
+  whitelistmanager:
+    usage: /command
+    description:  Command
+    aliases: [wm, wlm, whitelist, wl]
+  skull:
+    usage: /command
+    description:  Command
+    aliases: [head, gethead, getskull]
+  balance:
+    usage: /command
+    description:  Command
+    aliases: [bal]
+  charge:
+    usage: /command
+    description:  Command
+  pay:
+    usage: /command
+    description:  Command
+  setbalance:
+    usage: /command
+    description:  Command
+  reward:
+    usage: /command
+    description:  Command
+  transactions:
+    usage: /command
+    description:  Command
+  pin:
+    usage: /command
+    description:  Command
+  spawn:
+    usage: /command
+    description:  Command
+  kick:
+    usage: /command
+    description:  Command
+  profile:
+    usage: /command
+    description:  Command
+  security:
+    usage: /security
+    description:  Command
+  discord:
+    usage: /discord
+    description:  Command
+permissions:
+  core.discord:
+    description: Permission
+  core.security:
+    description: Permission
+  core.profile:
+    description: Permission
+  core.kick:
+    description: Permission
+  core.pin:
+    description: Permission
+  core.transactions:
+    description: Permission
+  core.reward:
+    description: Permission
+  core.pay:
+    description: Permission
+  core.setbalance:
+    description: Permission
+  core.charge:
+    description: Permission
+  core.balance:
+    description: Permission
+  core.skull:
+    description: Permission
+  core.whitelistmanager:
+    description: Permission
+  core.invsee:
+    description: Permission
+  core.healothers:
+    description: Permission
+  core.speed:
+    description: Permission
+  core.heal:
+    description: Permission
+  core.fixinventory:
+    description: Permission
+  core.getuuid:
+    description: Permission
+  core.reloadinventories:
+    description: Permission
+  core.tpcoord:
+    description: Permission
+  core.buildoffall:
+    description: Permission
+  core.buildmode:
+    description: Permission
+  core.edituser:
+    description: Permission
+  core.updaterank:
+    description: Permission
+  core.fly:
+    description: Permission
+  core.flyothers:
+    description: Permission
+  core.all:
+    description: Permission
+  core.vanish:
+    description: Permission
+  core.vanishothers:
+    description: Permission
+  core.nv:
+    description: Permission
+  core.nvothers:
+    description: Permission
+  core.staff:
+    description: Permission
+  core.tp:
+    description: Permission
+  core.tpothers:
+    description: Permission
+  core.tphere:
+    description: Permission
+  core.tpoverride:
+    description: Permission
+  core.tptoggle:
+    description: Permission
+  core.flyspeed:
+    description: Permission
+  core.walkspeed:
+    description: Permission
+  core.setwarp:
+    description: Permission
+  core.delwarp:
+    description: Permission
+  core.warps:
+    description: Permission
+  core.warps.guest:
+    description: Permission
+  core.warps.silver:
+    description: Permission
+  core.warps.gold:
+    description: Permission
+  core.warps.platinum:
+    description: Permission
+  core.warps.platinum+:
+    description: Permission
+  core.warps.specialguest:
+    description: Permission
+  core.warps.security:
+    description: Permission
+  core.warps.character:
+    description: Permission
+  core.warps.photopass:
+    description: Permission
+  core.warps.castmember:
+    description: Permission
+  core.warps.coordinator:
+    description: Permission
+  core.warps.developer:
+    description: Permission
+  core.warps.manager:
+    description: Permission

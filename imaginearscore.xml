@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="imaginearscore" default="all">
+  
+  
+  <property file="imaginearscore.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*.yarb/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+    <include name="*.ear"/>
+    <include name="*.klib"/>
+    <include name="*.swc"/>
+    <include name="*.war"/>
+    <include name="*.zip"/>
+    <include name="*.ane"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
+  <path id="jdk.classpath.1.8">
+    <fileset dir="${jdk.home.1.8}">
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/ext/cldrdata.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/jaccess.jar"/>
+      <include name="jre/lib/ext/jfxrt.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/nashorn.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/jfxswt.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="lib/ant-javafx.jar"/>
+      <include name="lib/dt.jar"/>
+      <include name="lib/javafx-mx.jar"/>
+      <include name="lib/jconsole.jar"/>
+      <include name="lib/packager.jar"/>
+      <include name="lib/sa-jdi.jar"/>
+      <include name="lib/tools.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.8}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.io.socket:socket.io-client:1.0.0.classpath">
+    <pathelement location="${basedir}/lib/engine.io-client-1.0.0.jar"/>
+    <pathelement location="${basedir}/lib/json-20090211.jar"/>
+    <pathelement location="${basedir}/lib/okhttp-3.8.1.jar"/>
+    <pathelement location="${basedir}/lib/okio-1.13.0.jar"/>
+    <pathelement location="${basedir}/lib/socket.io-client-1.0.0.jar"/>
+  </path>
+  
+  <path id="library.luckperms-bukkit-4.3.62.classpath">
+    <pathelement location="${basedir}/../../../Messing Around/server/plugins/LuckPerms-Bukkit-4.3.62.jar"/>
+  </path>
+  
+  <path id="library.org.json:json:20180813.classpath">
+    <pathelement location="${basedir}/lib/json-20180813.jar"/>
+  </path>
+  
+  <path id="library.spigot-1.13.2.classpath">
+    <pathelement location="${basedir}/../../../../Downloads/spigot-1.13.2.jar"/>
+  </path>
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <fileset dir="${javac2.home}">
+      <include name="javac2.jar"/>
+      <include name="jdom.jar"/>
+      <include name="asm-all*.jar"/>
+      <include name="forms-*.jar"/>
+    </fileset>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module ImaginearsCore -->
+  
+  <dirname property="module.imaginearscore.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.imaginearscore" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.imaginearscore" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.imaginearscore" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.imaginearscore" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="imaginearscore.output.dir" value="${module.imaginearscore.basedir}/out/production/ImaginearsCore"/>
+  <property name="imaginearscore.testoutput.dir" value="${module.imaginearscore.basedir}/out/test/ImaginearsCore"/>
+  
+  <path id="imaginearscore.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="imaginearscore.module.production.classpath">
+    <path refid="${module.jdk.classpath.imaginearscore}"/>
+    <path refid="library.spigot-1.13.2.classpath"/>
+    <path refid="library.luckperms-bukkit-4.3.62.classpath"/>
+    <path refid="library.io.socket:socket.io-client:1.0.0.classpath"/>
+    <path refid="library.org.json:json:20180813.classpath"/>
+  </path>
+  
+  <path id="imaginearscore.runtime.production.module.classpath">
+    <pathelement location="${imaginearscore.output.dir}"/>
+    <path refid="library.spigot-1.13.2.classpath"/>
+    <path refid="library.luckperms-bukkit-4.3.62.classpath"/>
+    <path refid="library.io.socket:socket.io-client:1.0.0.classpath"/>
+    <path refid="library.org.json:json:20180813.classpath"/>
+  </path>
+  
+  <path id="imaginearscore.module.classpath">
+    <path refid="${module.jdk.classpath.imaginearscore}"/>
+    <pathelement location="${imaginearscore.output.dir}"/>
+    <path refid="library.spigot-1.13.2.classpath"/>
+    <path refid="library.luckperms-bukkit-4.3.62.classpath"/>
+    <path refid="library.io.socket:socket.io-client:1.0.0.classpath"/>
+    <path refid="library.org.json:json:20180813.classpath"/>
+  </path>
+  
+  <path id="imaginearscore.runtime.module.classpath">
+    <pathelement location="${imaginearscore.testoutput.dir}"/>
+    <pathelement location="${imaginearscore.output.dir}"/>
+    <path refid="library.spigot-1.13.2.classpath"/>
+    <path refid="library.luckperms-bukkit-4.3.62.classpath"/>
+    <path refid="library.io.socket:socket.io-client:1.0.0.classpath"/>
+    <path refid="library.org.json:json:20180813.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.imaginearscore">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.imaginearscore">
+    <patternset refid="excluded.from.module.imaginearscore"/>
+  </patternset>
+  
+  <path id="imaginearscore.module.sourcepath">
+    <dirset dir="${module.imaginearscore.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.imaginearscore" depends="compile.module.imaginearscore.production,compile.module.imaginearscore.tests" description="Compile module ImaginearsCore"/>
+  
+  <target name="compile.module.imaginearscore.production" depends="register.custom.compilers" description="Compile module ImaginearsCore; production classes">
+    <mkdir dir="${imaginearscore.output.dir}"/>
+    <javac2 destdir="${imaginearscore.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.imaginearscore}/javac">
+      <compilerarg line="${compiler.args.imaginearscore}"/>
+      <bootclasspath refid="imaginearscore.module.bootclasspath"/>
+      <classpath refid="imaginearscore.module.production.classpath"/>
+      <src refid="imaginearscore.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.imaginearscore"/>
+    </javac2>
+    
+    <copy todir="${imaginearscore.output.dir}">
+      <fileset dir="${module.imaginearscore.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.imaginearscore.tests" depends="register.custom.compilers,compile.module.imaginearscore.production" description="compile module ImaginearsCore; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.imaginearscore" description="cleanup module">
+    <delete dir="${imaginearscore.output.dir}"/>
+    <delete dir="${imaginearscore.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.imaginearscore" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.imaginearscore" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.imaginearscore" value="${basedir}/out/artifacts/ImaginearsCore"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.ImaginearsCore.jar" value="${artifacts.temp.dir}/ImaginearsCore.jar"/>
+  </target>
+  
+  <target name="artifact.imaginearscore" depends="init.artifacts, compile.module.imaginearscore" description="Build &#39;ImaginearsCore&#39; artifact">
+    <property name="artifact.temp.output.imaginearscore" value="${artifacts.temp.dir}/ImaginearsCore"/>
+    <mkdir dir="${artifact.temp.output.imaginearscore}"/>
+    <jar destfile="${temp.jar.path.ImaginearsCore.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${imaginearscore.output.dir}"/>
+      <zipfileset file="${basedir}/src/plugin.yml"/>
+      <zipfileset file="${basedir}/src/shops.yml"/>
+    </jar>
+    <copy file="${temp.jar.path.ImaginearsCore.jar}" tofile="${artifact.temp.output.imaginearscore}/ImaginearsCore.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.imaginearscore" description="Build all artifacts">
+    <mkdir dir="${artifact.output.imaginearscore}"/>
+    <copy todir="${artifact.output.imaginearscore}">
+      <fileset dir="${artifact.temp.output.imaginearscore}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>
