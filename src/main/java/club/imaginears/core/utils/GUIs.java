@@ -383,7 +383,7 @@ public class GUIs implements Listener {
         sm.setLocalizedName(target.getName().toString());
 
         profile.setItemMeta(sm);
-        editUser.setItem(4, profile);
+        editUser.setItem(4, profile); 
 
         addItem(editUser, Material.RED_MUSHROOM, "&f[&eGuest&f]", Lists.newArrayList(" ", "§bSet the user's rank to §eGuest", " "), target.getName().toString(), 19);
 
