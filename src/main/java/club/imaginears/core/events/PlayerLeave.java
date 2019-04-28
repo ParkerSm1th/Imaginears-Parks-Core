@@ -17,7 +17,6 @@ public class PlayerLeave implements Listener {
     public void onPlayerLeave(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         if (p.getType() != EntityType.PLAYER) return;
-        MySQL.userLogOff(p);
 
         if (Build.checkBuildMode(p)) {
             InventoryManager.saveBuildInventory(p);

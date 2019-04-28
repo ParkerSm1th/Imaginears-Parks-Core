@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import java.sql.*;
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 
 public class MySQL {
 
@@ -314,6 +315,18 @@ public class MySQL {
         }
     }
 
+    public static void updateRankOffline(UUID uuid, Rank rank) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement pl = connection.prepareStatement("UPDATE server.player_data SET rank = ? WHERE uuid = ?");
+            pl.setInt(1, rank.getRankLadder());
+            pl.setString(2, uuid.toString());
+            pl.execute();
+            pl.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static Boolean checkPlayerExists(Player p) {
         try (Connection connection = getConnection()) {
             PreparedStatement sql = connection.prepareStatement("SELECT id FROM server.player_data WHERE uuid=?");
@@ -451,14 +464,6 @@ public class MySQL {
         }
     }
 
-    public static void userLogOff(Player p) {
-        try (Connection connection = getConnection()) {
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-
-        }
-    }
 
     public static void logKick(Kick kick) {
         try (Connection connection = getConnection()) {

@@ -24,15 +24,18 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SpecialSigns implements Listener {
+
+    ArrayList<Material> signs = new ArrayList<Material>(Arrays.asList(Material.OAK_SIGN, Material.OAK_WALL_SIGN, Material.ACACIA_SIGN, Material.ACACIA_WALL_SIGN, Material.BIRCH_SIGN, Material.BIRCH_WALL_SIGN, Material.DARK_OAK_SIGN, Material.DARK_OAK_WALL_SIGN, Material.JUNGLE_SIGN, Material.JUNGLE_WALL_SIGN, Material.SPRUCE_SIGN, Material.SPRUCE_WALL_SIGN));
 
     @EventHandler
     public void onPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
         Console.Log("Placed block", Console.types.DEBUG);
-        if (e.getBlockPlaced().getType() == Material.SIGN || e.getBlockPlaced().getType() == Material.WALL_SIGN) {
+        if (e.getBlockPlaced().getType() == Material.OAK_SIGN || e.getBlockPlaced().getType() == Material.OAK_WALL_SIGN) {
             Console.Log("Placed sign", Console.types.DEBUG);
         }
     }
@@ -41,7 +44,7 @@ public class SpecialSigns implements Listener {
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         Block b = e.getBlock();
-        if (b.getType() == Material.SIGN || b.getType() == Material.WALL_SIGN) {
+        if (signs.contains(b.getType())) {
             Sign sign = (Sign) e.getBlock().getState();
             if (sign.getLine(0).contains("Shop")) {
                 Location location = new Location(Bukkit.getWorld(b.getWorld().getName()), b.getX(), b.getY(), b.getZ());
@@ -85,7 +88,7 @@ public class SpecialSigns implements Listener {
                     ShopSigns.setupShop(workingOn.getName(), workingOn.getStore(), workingOn.getPrice(), workingOn.getLocation(), items);
                     Core.inProgressShops.remove(signLocation);
                     Core.playerOnShop.remove(p);
-                    Chat.sendMessage(p, "Shops", "Deselected shop that you were currently working and setup shop sign");
+                    Chat.sendMessage(p, "Shops", "Success! Setup shop sign! (Deselected shop sign as well)");
                 }
             } else {
                 Core.playerOnShop.remove(p);
@@ -94,7 +97,7 @@ public class SpecialSigns implements Listener {
             return;
         }
         if (!p.isSneaking()) {
-            if (b.getType() == Material.SIGN || b.getType() == Material.WALL_SIGN) {
+            if (signs.contains(b.getType())) {
                 Sign sign = (Sign) e.getClickedBlock().getState();
                 if (sign.getLine(0).contains("Shop")) {
                     Location location = new Location(Bukkit.getWorld(b.getWorld().getName()), b.getX(), b.getY(), b.getZ());
@@ -106,6 +109,7 @@ public class SpecialSigns implements Listener {
                         } else {
                             if (shop.getPrice() == (float) 0.0) {
                                 Chat.sendMessage(p, "Charge", "You have been given &b" + shop.getName());
+                                MySQL.logTransaction(u.getUniqueId().toString(), shop.getStore(), "CHARGE", (float) 0.0);
                             } else {
                                 u.subtractFromBalance(shop.getPrice());
                                 Chat.sendMessage(p, "Charge", "You have been charged &b$" + shop.getPrice() + " &aby &b" + shop.getStore() + " &aand have been given &b" + shop.getName());

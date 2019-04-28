@@ -16,8 +16,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="spigot-1.13.2" level="project" />
     <orderEntry type="library" name="LuckPerms-Bukkit-4.3.62" level="project" />
     <orderEntry type="library" name="Java-WebSocket-1.4.0-with-dependencies" level="project" />
+    <orderEntry type="library" name="spigot-1.14-pre5" level="project" />
   </component>
 </module>

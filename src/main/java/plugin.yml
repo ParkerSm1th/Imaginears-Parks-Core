@@ -3,7 +3,7 @@ author: Gatario
 main: club.imaginears.core.Core
 version: [0.1-BETA]
 description: Created for ImaginearsClub
-api-version: 1.13
+api-version: 1.14
 load: startup
 commands:
   edituser:
@@ -126,11 +126,19 @@ commands:
   security:
     usage: /security
     description:  Command
-  discord:
-    usage: /discord
+  givecustomitem:
+    usage: /givecustomitem
+    description:  Command
+  updaterank:
+    usage: /updaterank
+    description:  Command
+  hat:
+    usage: /hat
     description:  Command
 permissions:
-  core.discord:
+  core.hat:
+    description: Permission
+  core.givecustomitem:
     description: Permission
   core.security:
     description: Permission

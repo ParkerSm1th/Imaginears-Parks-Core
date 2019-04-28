@@ -330,6 +330,12 @@ public class Core extends JavaPlugin implements PluginMessageListener {
         Console.Log("Loaded profile command", Console.types.DEBUG);
         getCommand("security").setExecutor(new Security());
         Console.Log("Loaded security command", Console.types.DEBUG);
+        getCommand("givecustomitem").setExecutor(new GiveCustomItem());
+        Console.Log("Loaded givecustomitem command", Console.types.DEBUG);
+        getCommand("updaterank").setExecutor(new UpdateRank());
+        Console.Log("Loaded updaterank command", Console.types.DEBUG);
+        getCommand("hat").setExecutor(new Hat());
+        Console.Log("Loaded hat command", Console.types.DEBUG);
         Console.Log("Loaded commands..", Console.types.LOG);
     }
 
