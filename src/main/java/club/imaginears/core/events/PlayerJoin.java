@@ -47,6 +47,7 @@ public class PlayerJoin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (p.getType() != EntityType.PLAYER) return;
+        p.welcome();
         if (!MySQL.checkPlayerExists(p)) {
             MySQL.setupPlayer(p);
         }
