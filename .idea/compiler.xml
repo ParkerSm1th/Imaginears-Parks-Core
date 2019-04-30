@@ -3,8 +3,8 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile name="Annotation profile for parkscore" enabled="true">
-        <sourceOutputDir name="bungee-core/target/generated-sources/annotations" />
-        <sourceTestOutputDir name="bungee-core/target/generated-test-sources/test-annotations" />
+        <sourceOutputDir name="core/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="core/target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ImaginearsCore" />
       </profile>

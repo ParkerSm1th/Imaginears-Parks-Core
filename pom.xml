@@ -25,7 +25,7 @@
 
     <build>
         <defaultGoal>jar:jar</defaultGoal>
-        <directory>bungee-core/target</directory>
+        <directory>core/target</directory>
         <finalName>${artifactId}-${version}</finalName>
         <plugins>
             <plugin>
@@ -49,7 +49,7 @@
                     <!-- MainClass in mainfest make a executable jar -->
                     <archive>
                         <manifest>
-                            <mainClass>club.imaginears.bungee.Main</mainClass>
+                            <mainClass>club.imaginears.core.Core</mainClass>
                         </manifest>
                     </archive>
 
