@@ -6,30 +6,45 @@
 image: maven:3.3.9
 
 pipelines:
-  default:
-    - step:
-        name: Maven Install
-        deployment: production
-        caches:
-          - maven
-        script: # Modify the commands below to build your repository.
-          - mvn clean install
-        artifacts:
-          - core/target/**
-    #- parallel:
-        #- step:
-            #name: Uploading new file
-            # trigger: manual  # Uncomment to make this a manual deployment.
-            #script:
-             # - pipe: atlassian/sftp-deploy:0.3.1
-                #variables:
-                #  USER: 'root'
-                #  SERVER: '23.94.53.246'
-                #  REMOTE_PATH: '/home/bungee/plugins'
-                #  LOCAL_PATH: 'core/target/parkscore-1.0-SNAPSHOT-jar-with-dependencies.jar'
-            #  - echo "Uploaded to MK plugins!"
-    - step:
-        name: Uploading to downloads tab
-        script:
-          - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"core/target/parkscore-1.0-SNAPSHOT-jar-with-dependencies.jar"
-          - echo "Uploaded to downloads!"
+  branches:
+    master:
+      - step:
+          name: Maven Install
+          deployment: production
+          caches:
+            - maven
+          script: # Modify the commands below to build your repository.
+            - mvn clean install
+          artifacts:
+            - core/target/devbuilds/**
+      - step:
+          name: Uploading to downloads tab
+          script:
+            - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"core/target/devbuilds/parkscore-1.0-SNAPSHOT-jar-with-dependencies.jar"
+            - echo "Uploaded to downloads!"
+    production:
+      - step:
+          name: Maven Install
+          deployment: production
+          caches:
+            - maven
+          script: # Modify the commands below to build your repository.
+            - mvn clean install
+          artifacts:
+            - core/target/prod/**
+      - parallel:
+          - step:
+              name: Uploading new file
+              script:
+                - pipe: atlassian/sftp-deploy:0.3.1
+                  variables:
+                    USER: 'root'
+                    SERVER: '198.24.160.26'
+                    REMOTE_PATH: '/home/minecraft/multicraft/servers/mk/plugins'
+                    LOCAL_PATH: 'core/target/prod/parkscore-1.0-SNAPSHOT-jar-with-dependencies.jar'
+                - echo "Uploaded to MK plugins!"
+      - step:
+          name: Uploading to downloads tab
+          script:
+            - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"core/target/prod/parkscore-1.0-SNAPSHOT-jar-with-dependencies.jar"
+            - echo "Uploaded to downloads!"
