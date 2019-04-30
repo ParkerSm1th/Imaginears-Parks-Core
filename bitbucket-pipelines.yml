@@ -1,0 +1,35 @@
+# This is a sample build configuration for Java (Maven).
+# Check our guides at https://confluence.atlassian.com/x/zd-5Mw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: maven:3.3.9
+
+pipelines:
+  default:
+    - step:
+        name: Maven Install
+        deployment: production
+        caches:
+          - maven
+        script: # Modify the commands below to build your repository.
+          - mvn clean install
+        artifacts:
+          - core/target/**
+    #- parallel:
+        #- step:
+            #name: Uploading new file
+            # trigger: manual  # Uncomment to make this a manual deployment.
+            #script:
+             # - pipe: atlassian/sftp-deploy:0.3.1
+                #variables:
+                #  USER: 'root'
+                #  SERVER: '23.94.53.246'
+                #  REMOTE_PATH: '/home/bungee/plugins'
+                #  LOCAL_PATH: 'core/target/parkscore-1.0-SNAPSHOT-jar-with-dependencies.jar'
+            #  - echo "Uploaded to MK plugins!"
+    - step:
+        name: Uploading to downloads tab
+        script:
+          - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads/V${BITBUCKET_BUILD_NUMBER}" --form files=@"core/target/parkscore-1.0-SNAPSHOT-jar-with-dependencies.jar"
+          - echo "Uploaded to downloads!"
