@@ -2,10 +2,6 @@ package club.imaginears.core.commands;
 
 import club.imaginears.core.utils.Chat;
 import club.imaginears.core.utils.Permissions;
-import me.lucko.luckperms.common.util.TextUtils;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
