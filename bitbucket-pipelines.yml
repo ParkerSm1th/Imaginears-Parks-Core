@@ -16,11 +16,11 @@ pipelines:
           script: # Modify the commands below to build your repository.
             - mvn clean install
           artifacts:
-            - core/target/devbuilds/**
+            - core/target/**
       - step:
           name: Uploading to downloads tab
           script:
-            - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"core/target/devbuilds/parkscore-1.0-SNAPSHOT-jar-with-dependencies.jar"
+            - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"core/target/parkscore-1.0-SNAPSHOT-jar-with-dependencies.jar"
             - echo "Uploaded to downloads!"
     production:
       - step:
@@ -31,7 +31,7 @@ pipelines:
           script: # Modify the commands below to build your repository.
             - mvn clean install
           artifacts:
-            - core/target/prod/**
+            - core/target/**
       - parallel:
           - step:
               name: Uploading new file
@@ -41,10 +41,10 @@ pipelines:
                     USER: 'root'
                     SERVER: '198.24.160.26'
                     REMOTE_PATH: '/home/minecraft/multicraft/servers/mk/plugins'
-                    LOCAL_PATH: 'core/target/prod/parkscore-1.0-SNAPSHOT-jar-with-dependencies.jar'
+                    LOCAL_PATH: 'core/target/parkscore-1.0-SNAPSHOT-jar-with-dependencies.jar'
                 - echo "Uploaded to MK plugins!"
       - step:
           name: Uploading to downloads tab
           script:
-            - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"core/target/prod/parkscore-1.0-SNAPSHOT-jar-with-dependencies.jar"
+            - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"core/target/parkscore-1.0-SNAPSHOT-jar-with-dependencies.jar"
             - echo "Uploaded to downloads!"
