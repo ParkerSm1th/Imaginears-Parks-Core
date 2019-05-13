@@ -32,14 +32,13 @@ public class Reward implements CommandExecutor {
             if (args.length == 2) {
                 Player target = Bukkit.getPlayer(args[0]);
                 Float amount = Float.parseFloat(args[1]);
-                if (target == null) {
+                if (target == null) { 
                     Chat.sendError(p, Chat.ChatErrors.INVALIDARG, "/reward (Online Player) (Amount)");
                     return true;
                 }
                 User targetUser = Core.getUser(target.getUniqueId());
                 Transaction trans = new Transaction(REWARD, targetUser.getUniqueId().toString(), null, amount);
                 trans.process();
-                trans.logTransaction();
                 Chat.sendMessage(p, "Economy", "Successfully rewarded &b" + target.getName() + " &awith &b$" + amount);
                 Chat.sendMessage(target, "Economy", "&b$" + amount + " &ahas been added to your account");
             }
