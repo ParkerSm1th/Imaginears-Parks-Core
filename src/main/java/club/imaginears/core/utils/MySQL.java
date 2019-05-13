@@ -495,7 +495,6 @@ public class MySQL {
                 sql.close();
             }
             Float balance = result.getFloat("balance");
-            result.close();
             PreparedStatement sql3 = connection.prepareStatement("SELECT * FROM server.player_data WHERE uuid=?");
             sql3.setString(1, u.getUniqueId() + "");
             ResultSet result3 = sql3.executeQuery();
@@ -504,7 +503,6 @@ public class MySQL {
                 sql3.close();
             }
             u.setFirstJoin(result3.getString("first_join"));
-            result3.close();
             PreparedStatement sql2 = connection.prepareStatement("UPDATE server.player_data SET last_server = 'wdw' WHERE uuid = ?");
             sql2.setString(1, u.getUniqueId().toString());
             sql2.execute();
@@ -564,7 +562,7 @@ public class MySQL {
             sql.execute();
             sql.close();
 
-            PreparedStatement pl = connection.prepareStatement("INSERT INTO server.player_data (username, uuid, rank, first_join, online, last_server, webkey, build_mode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement pl = connection.prepareStatement("INSERT INTO server.player_data (username, uuid, rank, first_join, online, last_server, webkey, build_mode, latest_ip) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             pl.setString(1, p.getName());
             pl.setString(2, p.getUniqueId().toString());
             pl.setInt(3, Permissions.getRankUUID(p.getUniqueId().toString()).getRankLadder());
@@ -573,6 +571,7 @@ public class MySQL {
             pl.setString(6, "wdw");
             pl.setString(7, "null");
             pl.setString(8, "0");
+            pl.setString(9, p.getAddress().getHostString());
             pl.execute();
             pl.close();
             Console.Log("First join sql setup for player " + p.getName(), Console.types.DEBUG);

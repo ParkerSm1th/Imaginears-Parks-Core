@@ -43,7 +43,6 @@ public class Pay implements CommandExecutor {
                 }
                 Transaction trans = new Transaction(PAYSEND, u.getUniqueId().toString(), targetUser.getUniqueId().toString(), amount);
                 trans.process();
-                trans.logTransaction();
                 Chat.sendMessage(p, "Economy", "You have paid &b" + target.getName() + "&a, &b$" + amount);
                 Chat.sendMessage(target, "Economy", "You have been given &b$" + amount + " &afrom &b" + p.getName());
             }

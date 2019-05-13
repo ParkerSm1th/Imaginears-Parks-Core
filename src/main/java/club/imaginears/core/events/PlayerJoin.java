@@ -48,7 +48,10 @@ public class PlayerJoin implements Listener {
         Player p = e.getPlayer();
         if (p.getType() != EntityType.PLAYER) return;
         if (!MySQL.checkPlayerExists(p)) {
+            Console.Log("Player doesn't exists already", Console.types.LOG);
             MySQL.setupPlayer(p);
+        } else {
+            Console.Log("Player exists already", Console.types.LOG);
         }
         try {
             UUID uuid = e.getPlayer().getUniqueId();
